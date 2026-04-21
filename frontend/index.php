@@ -5,23 +5,24 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Home - Travel Agency Website</title>
-   <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+   <link rel="icon" type="image/x-icon" href="../images/favicon.png">
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   <link rel="stylesheet" href="scss/styles.css">
+   <link rel="stylesheet" href="../scss/styles.css">
 
 </head>
 <body>
 
-//realizimi i pjeses se MENU-se duke implementuar array listat ne PHP
 <?php
+
+//realizimi i pjeses se MENU-se duke implementuar array listat ne PHP
 
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
-    ["name" => "Package", "link" => "package.php"],
-    ["name" => "Book", "link" => "book.php"],
-    ["name" => "About", "link" => "about.php"],
-    ["name" => "Logout", "link" => "login.php", "class" => "logout"]
+    ["name" => "Package", "link" => "package.html"],
+    ["name" => "Book", "link" => "book.html"],
+    ["name" => "About", "link" => "about.html"],
+    ["name" => "Logout", "link" => "Login.html", "class" => "logout"]
 ];
 
 ?>
@@ -42,13 +43,14 @@ $navItems = [
    <div id="menu-btn" class="fas fa-bars"></div>
 </section>
 
+
 <section class="home">
 
    <div class="swiper home-slider">
 
       <div class="swiper-wrapper">
 
-         <div class="swiper-slide slide" style="background:url(images/home-slide-1.jpg) no-repeat">
+         <div class="swiper-slide slide" style="background:url(../images/home-slide-1.jpg) no-repeat">
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>travel arround the world</h3>
@@ -56,7 +58,7 @@ $navItems = [
             </div>
          </div>
 
-         <div class="swiper-slide slide" style="background:url(images/home-slide-2.jpg) no-repeat">
+         <div class="swiper-slide slide" style="background:url(../images/home-slide-2.jpg) no-repeat">
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>discover the new places</h3>
@@ -64,7 +66,7 @@ $navItems = [
             </div>
          </div>
 
-         <div class="swiper-slide slide" style="background:url(images/home-slide-3.jpg) no-repeat">
+         <div class="swiper-slide slide" style="background:url(../images/home-slide-3.jpg) no-repeat">
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>make your tour worthwhile</h3>
@@ -88,32 +90,32 @@ $navItems = [
    <div class="box-container">
 
       <div class="box">
-         <img src="images/icon-1.png" alt="">
+         <img src="../images/icon-1.png" alt="">
          <h3>adventure</h3>
       </div>
 
       <div class="box">
-         <img src="images/icon-2.png" alt="">
+         <img src="../images/icon-2.png" alt="">
          <h3>tour guide</h3>
       </div>
 
       <div class="box">
-         <img src="images/icon-3.png" alt="">
+         <img src="../images/icon-3.png" alt="">
          <h3>trekking</h3>
       </div>
 
       <div class="box">
-         <img src="images/icon-4.png" alt="">
+         <img src="../images/icon-4.png" alt="">
          <h3>camp fire</h3>
       </div>
 
       <div class="box">
-         <img src="images/icon-5.png" alt="">
+         <img src="../images/icon-5.png" alt="">
          <h3>off road</h3>
       </div>
 
       <div class="box">
-         <img src="images/icon-6.png" alt="">
+         <img src="../images/icon-6.png" alt="">
          <h3>camping</h3>
       </div>
 
@@ -124,7 +126,7 @@ $navItems = [
 <section class="home-about">
 
    <div class="image">
-      <img src="images/about-img.jpg" alt="">
+      <img src="../images/about-img.jpg" alt="">
    </div>
 
    <div class="content">
@@ -143,7 +145,7 @@ $navItems = [
 
       <div class="box">
          <div class="image">
-            <img src="images/img-1.jpg" alt="">
+            <img src="../images/img-1.jpg" alt="">
          </div>
          <div class="content">
             <h3>India</h3>
@@ -155,7 +157,7 @@ $navItems = [
 
       <div class="box">
          <div class="image">
-            <img src="images/img-2.jpg" alt="">
+            <img src="../images/img-2.jpg" alt="">
          </div>
          <div class="content">
             <h3>Switzerland</h3>
@@ -167,7 +169,7 @@ $navItems = [
       
       <div class="box">
          <div class="image">
-            <img src="images/img-3.jpg" alt="">
+            <img src="../images/img-3.jpg" alt="">
          </div>
          <div class="content">
             <h3>Latvia</h3>
@@ -196,7 +198,7 @@ $navItems = [
 
       <div class="box">
          <h3>quick links</h3>
-         <a href="index.html"> <i class="fas fa-angle-right"></i> Home</a>
+         <a href="index.php"> <i class="fas fa-angle-right"></i> Home</a>
          <a href="package.html"> <i class="fas fa-angle-right"></i> Package</a>
          <a href="book.html"> <i class="fas fa-angle-right"></i> Book</a>
          <a href="about.html"> <i class="fas fa-angle-right"></i> About</a>
@@ -224,7 +226,7 @@ $navItems = [
 
 </section>
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="js/script.js"></script>
+<script src="../js/script.js"></script>
 
 </body>
 </html>
