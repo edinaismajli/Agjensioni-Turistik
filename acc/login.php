@@ -1,6 +1,6 @@
 <?php
 
-require_once 'includes/auth.php';
+require_once '../includes/auth.php';
 
 $error = '';
 $login = '';
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: admin-panel.php');
                 exit;
             } else {
-                header('Location: index.php');
+                header('Location: ../frontend/index.php');
                 exit;
             }
         }
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="scss/registration.css">
+    <link rel="stylesheet" href="../scss/registration.css">
 </head>
 <body>
     <div class="wrapper">
