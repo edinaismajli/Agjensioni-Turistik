@@ -12,19 +12,36 @@
 
 </head>
 <body>
+
+//realizimi i pjeses se MENU-se duke implementuar array listat ne PHP
+<?php
+
+$navItems = [
+    ["name" => "Home", "link" => "index.php"],
+    ["name" => "Package", "link" => "package.php"],
+    ["name" => "Book", "link" => "book.php"],
+    ["name" => "About", "link" => "about.php"],
+    ["name" => "Logout", "link" => "login.php", "class" => "logout"]
+];
+
+?>
+
 <section class="header">
-   <a href="index.html" class="logo">travel.</a>
+   <a href="index.php" class="logo">travel.</a>
+
    <nav class="navbar">
-      <a href="index.html">Home</a>
-      <a href="package.html">Package</a>
-      <a href="book.html">Book</a>
-      <a href="about.html">About</a>
-      <a class="logout" href="Login.html">Logout</a>
+      <?php foreach($navItems as $item): ?>
+         <a 
+            href="<?php echo $item['link']; ?>" 
+            class="<?php echo isset($item['class']) ? $item['class'] : ''; ?>">
+            <?php echo $item['name']; ?>
+         </a>
+      <?php endforeach; ?>
    </nav>
 
    <div id="menu-btn" class="fas fa-bars"></div>
-
 </section>
+
 <section class="home">
 
    <div class="swiper home-slider">
