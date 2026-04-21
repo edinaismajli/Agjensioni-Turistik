@@ -6,6 +6,10 @@ $error = '';
 $login = '';
 $password = '';
 
+if (isset($_COOKIE['last_user'])) {
+    $login = $_COOKIE['last_user'];
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['login'])) {
         $login = trim($_POST['login']);
@@ -15,13 +19,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = trim($_POST['password']);
     }
 
-    $loginRegex = '/^([A-Za-z0-9_]{3,20}|[\w\.-]+@[\w\.-]+\.\w{2,})$/';
+    $usernameRegex = '/^[A-Za-z0-9_]{3,20}$/';
+    $emailRegex = '/^[a-zA-Z0-9 _\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/';
     $passwordRegex = '/^[A-Za-z0-9]{5,20}$/';
 
-    if (!preg_match($loginRegex, $login)) {
+    if (!preg_match($usernameRegex, $login) && !preg_match($emailRegex, $login)) {
         $error = 'Shkruaj username ose email valid.';
     } elseif (!preg_match($passwordRegex, $password)) {
         $error = 'Password duhet te kete 5-20 karaktere.';
+    } else {
+        $user = gjejPerdoruesin($login, $password);
+
+        if ($user == false) {
+            $error = 'Username/email ose password gabim.';
+        } else {
+            ruajSession($user);
+
+            if ($user['role'] == 'admin') {
+                header('Location: admin-panel.php');
+                exit;
+            } else {
+                header('Location: index.php');
+                exit;
+            }
+        }
     }
 }
 
@@ -40,6 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Login</h2>
 
         <?php
+        if (isset($_COOKIE['last_user'])) {
+            echo "<p style='margin-top: 18px;'>Welcome back, " . $_COOKIE['last_user'] . ".</p>";
+        }
+
         if ($error != '') {
             echo "<div class='errorMessage'>" . $error . "</div>";
         }
