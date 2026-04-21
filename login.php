@@ -14,6 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['password'])) {
         $password = trim($_POST['password']);
     }
+
+    $loginRegex = '/^([A-Za-z0-9_]{3,20}|[\w\.-]+@[\w\.-]+\.\w{2,})$/';
+    $passwordRegex = '/^[A-Za-z0-9]{5,20}$/';
+
+    if (!preg_match($loginRegex, $login)) {
+        $error = 'Shkruaj username ose email valid.';
+    } elseif (!preg_match($passwordRegex, $password)) {
+        $error = 'Password duhet te kete 5-20 karaktere.';
+    }
 }
 
 ?>
@@ -29,6 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="wrapper">
         <h2>Login</h2>
+
+        <?php
+        if ($error != '') {
+            echo "<div class='errorMessage'>" . $error . "</div>";
+        }
+        ?>
 
         <form method="post" action="login.php">
             <div class="input-box1">
