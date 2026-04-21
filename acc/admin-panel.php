@@ -20,16 +20,70 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../scss/admin.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
-    <h1>Admin Panel</h1>
+    <div class="sidebar">
+        <h4 class="admin-title">Admin Panel</h4>
 
-    <p>Welcome, <?php echo $admin->getUsername(); ?></p>
+        <p style="color: white; text-align: center; margin-bottom: 15px;">
+            <?php echo $admin->getUsername(); ?>
+        </p>
 
-    <a href="logout.php">Logout</a>
+        <div class="date-time">
+            <div id="date"></div>
+            <div id="time"></div>
+        </div>
+
+        <button data-section-id="addPackageSection">Add Package</button>
+        <button data-section-id="managePackages">Delete Packages</button>
+        <button data-section-id="bookings">Manage Bookings</button>
+        <button id="logoutButton">LogOut</button>
+    </div>
+
+    <div id="mainContent" class="container">
+        <div id="addPackageSection" class="content-section">
+            <h1 class="header">Add Package</h1>
+
+            <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
+                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
+                <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
+                <input type="file" id="packageImage" class="input-field" required>
+                <button type="submit" class="action-button">Add Package</button>
+            </form>
+        </div>
+
+        <div id="bookings" class="content-section hidden">
+            <h1 class="header">
+                Manage Bookings
+                <button id="refreshBookings" class="refresh-button">
+                    <i class="fas fa-sync-alt"></i> <span id="refreshText">Refresh</span>
+                </button>
+            </h1>
+
+            <div id="bookingCards" class="cards-container"></div>
+        </div>
+
+        <div id="managePackagesSection" class="content-section hidden">
+            <h1 class="header">Manage Packages</h1>
+            <div id="packageCards" class="cards-container"></div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
 </body>
+
 </html>
