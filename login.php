@@ -4,6 +4,17 @@ require_once 'includes/auth.php';
 
 $error = '';
 $login = '';
+$password = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['login'])) {
+        $login = trim($_POST['login']);
+    }
+
+    if (isset($_POST['password'])) {
+        $password = trim($_POST['password']);
+    }
+}
 
 ?>
 
@@ -21,7 +32,7 @@ $login = '';
 
         <form method="post" action="login.php">
             <div class="input-box1">
-                <input type="text" name="login" placeholder="Enter your username or email" required>
+                <input type="text" name="login" placeholder="Enter your username or email" value="<?php echo $login; ?>" required>
             </div>
 
             <div class="input-box2">
