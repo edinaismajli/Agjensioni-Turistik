@@ -1,10 +1,20 @@
 <?php
 
-require_once '../includes/auth.php';
+require_once '../includes/session.php';
+require_once '../classes/User.php';
+require_once '../classes/Admin.php';
 
-kontrolloRolin('admin');
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
 
-$admin = merPerdoruesinAktual();
+if ($_SESSION['role'] != 'admin') {
+    header('Location: ../frontend/index.php');
+    exit;
+}
+
+$admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email'], $_SESSION['role']);
 
 ?>
 

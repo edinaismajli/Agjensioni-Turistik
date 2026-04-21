@@ -22,7 +22,7 @@ $navItems = [
     ["name" => "Package", "link" => "package.html"],
     ["name" => "Book", "link" => "book.html"],
     ["name" => "About", "link" => "about.html"],
-    ["name" => "Logout", "link" => "Login.html", "class" => "logout"]
+    ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
 ];
 
 ?>
