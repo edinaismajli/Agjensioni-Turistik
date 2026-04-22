@@ -19,7 +19,7 @@
 
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
-    ["name" => "Package", "link" => "package.html"],
+    ["name" => "Package", "link" => "package.php"],
     ["name" => "Book", "link" => "book.html"],
     ["name" => "About", "link" => "about.html"],
     ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
@@ -54,7 +54,7 @@ $navItems = [
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>travel arround the world</h3>
-               <a href="package.html" class="btn">discover more</a>
+               <a href="package.php" class="btn">discover more</a>
             </div>
          </div>
 
@@ -62,7 +62,7 @@ $navItems = [
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>discover the new places</h3>
-               <a href="package.html" class="btn">discover more</a>
+               <a href="package.php" class="btn">discover more</a>
             </div>
          </div>
 
@@ -70,7 +70,7 @@ $navItems = [
             <div class="content">
                <span>explore, discover, travel</span>
                <h3>make your tour worthwhile</h3>
-               <a href="package.html" class="btn">discover more</a>
+               <a href="package.php" class="btn">discover more</a>
             </div>
          </div>
          
@@ -181,7 +181,7 @@ $navItems = [
 
    </div>
 
-   <div class="load-more"> <a href="package.html" class="btn">load more</a> </div>
+   <div class="load-more"> <a href="package.php" class="btn">load more</a> </div>
 
 </section>
 
@@ -199,7 +199,7 @@ $navItems = [
       <div class="box">
          <h3>quick links</h3>
          <a href="index.php"> <i class="fas fa-angle-right"></i> Home</a>
-         <a href="package.html"> <i class="fas fa-angle-right"></i> Package</a>
+         <a href="package.php"> <i class="fas fa-angle-right"></i> Package</a>
          <a href="book.html"> <i class="fas fa-angle-right"></i> Book</a>
          <a href="about.html"> <i class="fas fa-angle-right"></i> About</a>
       </div>
