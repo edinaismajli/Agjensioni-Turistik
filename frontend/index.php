@@ -15,7 +15,7 @@
 
 <?php
 
-//realizimi i pjeses se MENU-se duke implementuar array listat ne PHP
+//realizimi i pjeses se MENU-se duke implementuar vargjet asociative shumedimensioanle ne PHP
 
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
@@ -46,7 +46,7 @@ $navItems = [
 
 <?php
 
-//paraqitja e pjeses se sliderit duke i trajtuar si array lista asociative ne PHP
+//paraqitja e pjeses se sliderit duke e trajtuar si varg shumedimensional asociativ ne PHP
 
 $slides = [
     [
@@ -95,43 +95,8 @@ $slides = [
 
 </section>
 
-<section class="services">
 
-   <h1 class="heading-title"> our services </h1>
 
-   <div class="box-container">
-
-      <div class="box">
-         <img src="images/icon-1.png" alt="">
-         <h3>adventure</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-2.png" alt="">
-         <h3>tour guide</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-3.png" alt="">
-         <h3>trekking</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-4.png" alt="">
-         <h3>camp fire</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-5.png" alt="">
-         <h3>off road</h3>
-      </div>
-
-      <div class="box">
-         <img src="images/icon-6.png" alt="">
-         <h3>camping</h3>
-      </div>
-
-   </div>
 
 </section>
 
