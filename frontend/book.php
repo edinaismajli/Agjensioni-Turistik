@@ -12,10 +12,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $arrivals    = $_POST["arrivals"];
     $leaving     = $_POST["leaving"];
 
-    $_SESSION["booking_name"] = $name;
+    // QITU I QET VALIDIMET
+    $errors = [];
 
-    setcookie("last_destination", $destination, time() + 3600);
+    if (!preg_match("/^[a-zA-Z\s]{3,50}$/", $name)) {
+        $errors[] = "Invalid name";
+    }
 
-    echo "Booking completed successfully!";
+    if (!preg_match("/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/", $email)) {
+        $errors[] = "Invalid email";
+    }
+
+    if (!preg_match("/^[0-9]{8,15}$/", $phone)) {
+        $errors[] = "Invalid phone number";
+    }
+
+    // nëse ska gabime
+    if (count($errors) == 0) {
+
+        $_SESSION["booking_name"] = $name;
+
+        setcookie("last_destination", $destination, time() + 3600);
+
+        echo "Booking completed successfully!";
+    }
 }
 ?>
