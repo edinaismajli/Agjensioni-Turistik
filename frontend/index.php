@@ -95,10 +95,42 @@ $slides = [
 
 </section>
 
+<?php
 
+//pjesa e implementimit te sherbimeve duke krijuar nje klase Service ne PHP dhe duke e trajtuar si objekt te klases Service
 
+require_once "../classes/Services.php";
+
+$services = [
+    new Service("images/icon-1.png", "adventure"),
+    new Service("images/icon-2.png", "tour guide"),
+    new Service("images/icon-3.png", "trekking"),
+    new Service("images/icon-4.png", "camp fire"),
+    new Service("images/icon-5.png", "off road"),
+    new Service("images/icon-6.png", "camping")
+];
+?>
+
+<section class="services">
+
+   <h1 class="heading-title"> our services </h1>
+
+   <div class="box-container">
+
+      <?php
+      foreach($services as $service) {
+          echo $service->render();
+      }
+      ?>
+
+   </div>
 
 </section>
+
+
+
+
+
 
 <section class="home-about">
 
