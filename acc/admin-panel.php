@@ -26,10 +26,10 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
-    <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../frontend/images/favicon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="../scss/admin.css">
+    <link rel="stylesheet" href="../frontend/scss/admin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -83,7 +83,7 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
         </div>
     </div>
 
-    <script src="../js/admin.js"></script>
+    <script src="../frontend/js/admin.js"></script>
 </body>
 
 </html>

@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch packages function
     function fetchPackages() {
-        fetch('db.json')
+        fetch('../frontend/db.json')
             .then(response => response.json())
             .then(data => {
                 displayPackages(data.packages);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </button>
                     </div>
                     <div class="card-body">
-                        <img src="${pkg.image}" alt="${pkg.name}" class="package-image">
+                        <img src="../frontend/${pkg.image}" alt="${pkg.name}" class="package-image">
                         <p>${pkg.description}</p>
                     </div>
                 `;
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to fetch bookings
 function fetchBookings() {
-    fetch('db.json')
+    fetch('../frontend/db.json')
         .then(response => response.json())
         .then(data => {
             displayBookings(data.bookings);
