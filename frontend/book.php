@@ -25,6 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!preg_match("/^[0-9]{8,15}$/", $phone)) {
         $errors[] = "Invalid phone number";
     }
+    
+    if ($guests < 1 || $guests > 20) {
+    $errors[] = "Guests must be between 1 and 20";
+}
 
     if (count($errors) == 0) {
 
