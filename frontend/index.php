@@ -127,11 +127,6 @@ $services = [
 
 </section>
 
-
-
-
-
-
 <section class="home-about">
 
    <div class="image">
@@ -146,53 +141,80 @@ $services = [
 
 </section>
 
+<?php
+
+//perdorimi i funksionit usort ne PHP per te renditur paketat turistike bazuar ne cmim, duke 
+
+$packages = [
+    [
+        "country" => "India",
+        "price" => 949,
+        "image" => "images/img-1.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ],
+    [
+        "country" => "Switzerland",
+        "price" => 799,
+        "image" => "images/img-2.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ],
+    [
+        "country" => "Latvia",
+        "price" => 699,
+        "image" => "images/img-3.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ]
+];
+
+$order = $_GET['sort'] ?? 'asc';
+
+usort($packages, function($a, $b) use ($order) {
+    return $order === 'asc'
+        ? $a['price'] <=> $b['price']
+        : $b['price'] <=> $a['price'];
+});
+
+?>
+
+
 <section class="home-packages">
 
    <h1 class="heading-title"> our packages </h1>
 
+   <div style="text-align:center; margin:20px;">
+   <a href="?sort=asc" class="btn">Lowest Price</a>
+   <a href="?sort=desc" class="btn">Highest Price</a>
+</div>
+
    <div class="box-container">
 
-      <div class="box">
-         <div class="image">
-            <img src="images/img-1.jpg" alt="">
+      <?php foreach($packages as $pkg): ?>
+         <div class="box">
+            <div class="image">
+               <img src="<?php echo $pkg['image']; ?>" alt="">
+            </div>
+            <div class="content">
+               <h3>
+                  <?php echo $pkg['country']; ?>
+                  <b> <?php echo $pkg['price']; ?>$</b>
+               </h3>
+               <p><?php echo $pkg['desc']; ?></p>
+               <a href="book.php" class="btn">book now</a>
+            </div>
          </div>
-         <div class="content">
-            <h3>India</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="images/img-2.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>Switzerland</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
-      
-      <div class="box">
-         <div class="image">
-            <img src="images/img-3.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>Latvia</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
+      <?php endforeach; ?>
 
    </div>
 
-   <div class="load-more"> <a href="package.php" class="btn">load more</a> </div>
+   <div class="load-more">
+      <a href="package.php" class="btn">load more</a>
+   </div>
 
 </section>
+
+
+
+
 
 <section class="home-offer">
    <div class="content">
