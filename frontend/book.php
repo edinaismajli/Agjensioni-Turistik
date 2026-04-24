@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $arrivals    = $_POST["arrivals"];
     $leaving     = $_POST["leaving"];
 
-    // QITU I QET VALIDIMET
     $errors = [];
 
     if (!preg_match("/^[a-zA-Z\s]{3,50}$/", $name)) {
@@ -27,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Invalid phone number";
     }
 
-    // nëse ska gabime
     if (count($errors) == 0) {
 
         $_SESSION["booking_name"] = $name;
