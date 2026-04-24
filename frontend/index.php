@@ -5,21 +5,21 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Home - Travel Agency Website</title>
-   <link rel="icon" type="image/x-icon" href="../images/favicon.png">
+   <link rel="icon" type="image/x-icon" href="images/favicon.png">
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   <link rel="stylesheet" href="../scss/styles.css">
+   <link rel="stylesheet" href="scss/styles.css">
 
 </head>
 <body>
 
 <?php
 
-//realizimi i pjeses se MENU-se duke implementuar array listat ne PHP
+//realizimi i pjeses se MENU-se duke implementuar vargjet asociative shumedimensioanle ne PHP
 
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
-    ["name" => "Package", "link" => "package.html"],
+    ["name" => "Package", "link" => "package.php"],
     ["name" => "Book", "link" => "book.html"],
     ["name" => "About", "link" => "about.html"],
     ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
@@ -44,35 +44,47 @@ $navItems = [
 </section>
 
 
+<?php
+
+//paraqitja e pjeses se sliderit duke e trajtuar si varg shumedimensional asociativ ne PHP
+
+$slides = [
+    [
+        "image" => "images/home-slide-1.jpg",
+        "title" => "travel arround the world",
+        "text" => "explore, discover, travel",
+        "link" => "package.php"
+    ],
+    [
+        "image" => "images/home-slide-2.jpg",
+        "title" => "discover the new places",
+        "text" => "explore, discover, travel",
+        "link" => "package.php"
+    ],
+    [
+        "image" => "images/home-slide-3.jpg",
+        "title" => "make your tour worthwhile",
+        "text" => "explore, discover, travel",
+        "link" => "package.php"
+    ]
+];
+
+?>
 <section class="home">
 
    <div class="swiper home-slider">
 
       <div class="swiper-wrapper">
 
-         <div class="swiper-slide slide" style="background:url(../images/home-slide-1.jpg) no-repeat">
-            <div class="content">
-               <span>explore, discover, travel</span>
-               <h3>travel arround the world</h3>
-               <a href="package.html" class="btn">discover more</a>
+         <?php foreach($slides as $slide): ?>
+            <div class="swiper-slide slide" style="background:url(<?php echo $slide['image']; ?>) no-repeat">
+               <div class="content">
+                  <span><?php echo $slide['text']; ?></span>
+                  <h3><?php echo $slide['title']; ?></h3>
+                  <a href="<?php echo $slide['link']; ?>" class="btn">discover more</a>
+               </div>
             </div>
-         </div>
-
-         <div class="swiper-slide slide" style="background:url(../images/home-slide-2.jpg) no-repeat">
-            <div class="content">
-               <span>explore, discover, travel</span>
-               <h3>discover the new places</h3>
-               <a href="package.html" class="btn">discover more</a>
-            </div>
-         </div>
-
-         <div class="swiper-slide slide" style="background:url(../images/home-slide-3.jpg) no-repeat">
-            <div class="content">
-               <span>explore, discover, travel</span>
-               <h3>make your tour worthwhile</h3>
-               <a href="package.html" class="btn">discover more</a>
-            </div>
-         </div>
+         <?php endforeach; ?>
          
       </div>
 
@@ -83,41 +95,33 @@ $navItems = [
 
 </section>
 
+<?php
+
+//pjesa e implementimit te sherbimeve duke krijuar nje klase Service ne PHP dhe duke e trajtuar si objekt te klases Service
+
+require_once "../classes/Services.php";
+
+$services = [
+    new Service("images/icon-1.png", "adventure"),
+    new Service("images/icon-2.png", "tour guide"),
+    new Service("images/icon-3.png", "trekking"),
+    new Service("images/icon-4.png", "camp fire"),
+    new Service("images/icon-5.png", "off road"),
+    new Service("images/icon-6.png", "camping")
+];
+?>
+
 <section class="services">
 
    <h1 class="heading-title"> our services </h1>
 
    <div class="box-container">
 
-      <div class="box">
-         <img src="../images/icon-1.png" alt="">
-         <h3>adventure</h3>
-      </div>
-
-      <div class="box">
-         <img src="../images/icon-2.png" alt="">
-         <h3>tour guide</h3>
-      </div>
-
-      <div class="box">
-         <img src="../images/icon-3.png" alt="">
-         <h3>trekking</h3>
-      </div>
-
-      <div class="box">
-         <img src="../images/icon-4.png" alt="">
-         <h3>camp fire</h3>
-      </div>
-
-      <div class="box">
-         <img src="../images/icon-5.png" alt="">
-         <h3>off road</h3>
-      </div>
-
-      <div class="box">
-         <img src="../images/icon-6.png" alt="">
-         <h3>camping</h3>
-      </div>
+      <?php
+      foreach($services as $service) {
+          echo $service->render();
+      }
+      ?>
 
    </div>
 
@@ -126,7 +130,7 @@ $navItems = [
 <section class="home-about">
 
    <div class="image">
-      <img src="../images/about-img.jpg" alt="">
+      <img src="images/about-img.jpg" alt="">
    </div>
 
    <div class="content">
@@ -137,53 +141,80 @@ $navItems = [
 
 </section>
 
+<?php
+
+//perdorimi i funksionit usort ne PHP per te renditur paketat turistike bazuar ne cmim, duke 
+
+$packages = [
+    [
+        "country" => "India",
+        "price" => 949,
+        "image" => "images/img-1.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ],
+    [
+        "country" => "Switzerland",
+        "price" => 799,
+        "image" => "images/img-2.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ],
+    [
+        "country" => "Latvia",
+        "price" => 699,
+        "image" => "images/img-3.jpg",
+        "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
+    ]
+];
+
+$order = $_GET['sort'] ?? 'asc';
+
+usort($packages, function($a, $b) use ($order) {
+    return $order === 'asc'
+        ? $a['price'] <=> $b['price']
+        : $b['price'] <=> $a['price'];
+});
+
+?>
+
+
 <section class="home-packages">
 
    <h1 class="heading-title"> our packages </h1>
 
+   <div style="text-align:center; margin:20px;">
+   <a href="?sort=asc" class="btn">Lowest Price</a>
+   <a href="?sort=desc" class="btn">Highest Price</a>
+</div>
+
    <div class="box-container">
 
-      <div class="box">
-         <div class="image">
-            <img src="../images/img-1.jpg" alt="">
+      <?php foreach($packages as $pkg): ?>
+         <div class="box">
+            <div class="image">
+               <img src="<?php echo $pkg['image']; ?>" alt="">
+            </div>
+            <div class="content">
+               <h3>
+                  <?php echo $pkg['country']; ?>
+                  <b> <?php echo $pkg['price']; ?>$</b>
+               </h3>
+               <p><?php echo $pkg['desc']; ?></p>
+               <a href="book.php" class="btn">book now</a>
+            </div>
          </div>
-         <div class="content">
-            <h3>India</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
-
-      <div class="box">
-         <div class="image">
-            <img src="../images/img-2.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>Switzerland</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
-      
-      <div class="box">
-         <div class="image">
-            <img src="../images/img-3.jpg" alt="">
-         </div>
-         <div class="content">
-            <h3>Latvia</h3>
-            <P>"Journey with us, where every moment becomes an unforgettable adventure."</P>
-
-            <a href="book.html" class="btn">book now</a>
-         </div>
-      </div>
+      <?php endforeach; ?>
 
    </div>
 
-   <div class="load-more"> <a href="package.html" class="btn">load more</a> </div>
+   <div class="load-more">
+      <a href="package.php" class="btn">load more</a>
+   </div>
 
 </section>
+
+
+
+
 
 <section class="home-offer">
    <div class="content">
@@ -199,7 +230,7 @@ $navItems = [
       <div class="box">
          <h3>quick links</h3>
          <a href="index.php"> <i class="fas fa-angle-right"></i> Home</a>
-         <a href="package.html"> <i class="fas fa-angle-right"></i> Package</a>
+         <a href="package.php"> <i class="fas fa-angle-right"></i> Package</a>
          <a href="book.html"> <i class="fas fa-angle-right"></i> Book</a>
          <a href="about.html"> <i class="fas fa-angle-right"></i> About</a>
       </div>
@@ -226,7 +257,7 @@ $navItems = [
 
 </section>
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="../js/script.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
