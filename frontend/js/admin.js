@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Event listener for sidebar buttons
-    document.querySelectorAll('.sidebar button').forEach(button => {
+    document.querySelectorAll('.sidebar button[data-section-id]').forEach(button => {
         button.addEventListener('click', function () {
             const sectionId = this.dataset.sectionId;
             showSection(sectionId);
@@ -243,7 +243,7 @@ function showSection(sectionId) {
 
 // Function to logout
 function logout() {
-    window.location.href = "admin.html";
+    window.location.href = "logout.php";
 }
 
 // Function to update clock
@@ -270,3 +270,4 @@ function mailCustomer(name, email, phone, address, location, guests, arrival, le
     const body = encodeURIComponent(`Hello dear ${name},\n\nThank you for your booking with us. We have received your booking details and are arranging your trip. Your booking details are as follows:\n\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\nLocation: ${location}\nGuests: ${guests}\nArrival: ${arrival}\nLeaving: ${leaving}\n\nWe will get in touch with you shortly.\n\nBest regards,\nTravel. Agency\nDirectors:\n Kashif Abbas Kazmi\n Muhammad Sarim`);
     window.open(`mailto:${email}?subject=${subject}&body=${body}`);
 }
+
