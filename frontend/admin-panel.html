@@ -1,9 +1,11 @@
 <?php
 session_start();
-if (!isset($_SESSION["user"]]) || $_SESSION["role"] !== "admin") {
+
+if (!isset($_SESSION["user"]) || $_SESSION["role"] !== "admin") {
     header('Location: login.html');
     exit();
 }
+
 $lastUser = isset($_COOKIE["last_user"]) ? $_COOKIE["last_user"] : "Admin";
 ?>
 
