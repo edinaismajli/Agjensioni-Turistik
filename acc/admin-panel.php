@@ -81,12 +81,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
 
-                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
+                <input type="text" id="packageName" class="input-field" placeholder="Package Description" required></textarea>
                 <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
-                <input type="file" id="packageImage" class="input-field" required>
+                <input type="file" id="packagelmage" class="input-field" required>
                 <button type="submit" class="action-button">Add Package</button>
             </form>
         </div>
+        
 
         <div id="bookings" class="content-section hidden">
             <h1 class="header">
