@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,8 +72,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="mainContent" class="container">
         <div id="addPackageSection" class="content-section">
             <h1 class="header">Add Package</h1>
+            
+            <?php if (!empty($successMessage)) { ?>
+    <p style="color: green; font-weight: bold;">
+        <?php echo $successMessage; ?>
+    </p>
+<?php } ?>
 
             <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
+
                 <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
                 <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
                 <input type="file" id="packageImage" class="input-field" required>

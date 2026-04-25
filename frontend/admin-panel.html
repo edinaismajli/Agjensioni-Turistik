@@ -51,10 +51,12 @@ $lastUser = isset($_COOKIE["last_user"]) ? $_COOKIE["last_user"] : "Admin";
         <!-- Add Package Section -->
         <div id="addPackageSection" class="content-section">
             <h1 class="header">Add Package</h1>
-            <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
-                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
-                <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
+            <form method="POST" class="form-addpkg" enctype="multipart/form-data">
+                
+                <input type="text" id="packageName" name="packageName" class="input-field" placeholder="Package Name" required>
+                <textarea id="packageDescription" name="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
                 <input type="file" id="packageImage" class="input-field" required>
+
                 <button type="submit" class="action-button">Add Package</button>
             </form>
         </div>
