@@ -3,14 +3,14 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $name        = $_POST["name"];
-    $email       = $_POST["email"];
-    $phone       = $_POST["phone"];
-    $address     = $_POST["address"];
-    $destination = $_POST["destination"];
-    $guests      = $_POST["guests"];
-    $arrivals    = $_POST["arrivals"];
-    $leaving     = $_POST["leaving"];
+$name        = trim($_POST["name"]);
+$email       = trim($_POST["email"]);
+$phone       = trim($_POST["phone"]);
+$address     = trim($_POST["address"]);
+$destination = trim($_POST["destination"]);
+$guests      = trim($_POST["guests"]);
+$arrivals    = trim($_POST["arrivals"]);
+$leaving     = trim($_POST["leaving"]);
 
     $errors = [];
 
