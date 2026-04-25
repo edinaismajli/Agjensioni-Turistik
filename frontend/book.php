@@ -33,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (count($errors) == 0) {
 
         $_SESSION["booking_name"] = $name;
+        $_SESSION["booking_email"] = $email;
+        $_SESSION["booking_destination"] = $destination;
 
         setcookie("last_destination", $destination, time() + 3600);
 
