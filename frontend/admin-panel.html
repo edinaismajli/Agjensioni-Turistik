@@ -29,11 +29,12 @@ $lastUser = isset($_COOKIE["last_user"]) ? $_COOKIE["last_user"] : "Admin";
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="admin-title">Admin Panel
+        <h4 class="admin-title">
             Admin Panel - <?php echo $_SESSION["user"]; ?>
         </h4>
         <p> Last login: <?php echo $lastUser; ?></p>
-        
+
+
         <div class="date-time">
             <div id="date"></div>
             <div id="time"></div>

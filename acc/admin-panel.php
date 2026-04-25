@@ -18,6 +18,20 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
 
 ?>
 
+<?php
+// DEMO: ruajtje statike vetëm për shfaqje
+$successMessage = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['packageName']) && isset($_POST['packageDescription'])) {
+
+        $name = $_POST['packageName'];
+        $desc = $_POST['packageDescription'];
+
+        $successMessage = "Package u shtua (DEMO): $name - $desc";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
