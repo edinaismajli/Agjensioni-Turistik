@@ -9,13 +9,12 @@ if (!isset($_SESSION['user_id'])) {
 include '../classes/Package.php';
 
 $packages = [
-    new Package("India", "Explore the rich culture of India", "images/img-1.jpg"),
-    new Package("Switzerland", "Beautiful mountains and lakes", "images/img-2.jpg"),
-    new Package("Latvia", "Hidden gem in Europe", "images/img-3.jpg"),
+    new Package("India", "Explore the rich culture of India", "images/img-9.jpg"),
+    new Package("Switzerland", "Beautiful mountains and lakes", "images/img-8.jpg"),
+    new Package("Latvia", "Hidden gem in Europe", "images/img-7.jpg"),
     new Package("France", "Romantic destinations", "images/img-4.jpg"),
     new Package("Japan", "Modern and traditional mix", "images/img-5.jpg"),
-    new Package("Australia", "Adventure and nature", "images/img-6.jpg"),
-    new Package("Kosova", "Adventure and nature", "images/img-6.jpg")
+    new Package("Australia", "Adventure and nature", "images/img-6.jpg")
 ];
 ?>
 
