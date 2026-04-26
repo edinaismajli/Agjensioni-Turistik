@@ -1,21 +1,24 @@
 <?php
-
 require_once '../includes/session.php';
 require_once '../classes/User.php';
 require_once '../classes/Admin.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
-    exit;
+    exit();
 }
 
-if ($_SESSION['role'] != 'admin') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: ../frontend/index.php');
-    exit;
+    exit();
 }
 
-$admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email'], $_SESSION['role']);
-
+$admin = new Admin(
+    $_SESSION['user_id'],
+    $_SESSION['username'],
+    $_SESSION['email'],
+    $_SESSION['role']
+);
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +28,7 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Dashboard</title>
     <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -37,10 +40,14 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
 
 <body>
     <div class="sidebar">
-        <h4 class="admin-title">Admin Panel</h4>
+        <h4 class="admin-title">Admin Dashboard</h4>
+
+        <p style="color: white; text-align: center; margin-bottom: 10px;">
+            Welcome, <?php echo htmlspecialchars($admin->getUsername()); ?>
+        </p>
 
         <p style="color: white; text-align: center; margin-bottom: 15px;">
-            <?php echo $admin->getUsername(); ?>
+            Role: <?php echo htmlspecialchars($_SESSION['role']); ?>
         </p>
 
         <div class="date-time">
@@ -49,7 +56,7 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
         </div>
 
         <button data-section-id="addPackageSection">Add Package</button>
-        <button data-section-id="managePackages">Delete Packages</button>
+        <button data-section-id="managePackagesSection">Delete Packages</button>
         <button data-section-id="bookings">Manage Bookings</button>
         <button id="logoutButton">LogOut</button>
     </div>
@@ -59,14 +66,12 @@ $admin = new Admin($_SESSION['user_id'], $_SESSION['username'], $_SESSION['email
             <h1 class="header">Add Package</h1>
 
             <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
-
-                <input type="text" id="packageName" class="input-field" placeholder="Package Description" required></textarea>
+                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
                 <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
-                <input type="file" id="packagelmage" class="input-field" required>
+                <input type="file" id="packageImage" class="input-field" required>
                 <button type="submit" class="action-button">Add Package</button>
             </form>
         </div>
-        
 
         <div id="bookings" class="content-section hidden">
             <h1 class="header">
