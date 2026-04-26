@@ -18,7 +18,6 @@ $packages = [
     new Package("France", "Romantic destinations", "../images/img-4.jpg"),
     new Package("Japan", "Modern and traditional mix", "../images/img-5.jpg"),
     new Package("Australia", "Adventure and nature", "../images/img-6.jpg"),
-    new Package("Kosova", "Adventure and nature", "../images/img-6.jpg")
 ];
 ?>
 
