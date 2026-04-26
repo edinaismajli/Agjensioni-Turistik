@@ -50,19 +50,19 @@ $navItems = [
 
 $slides = [
     [
-        "image" => "images/home-slide-1.jpg",
+        "image" => "images/home-slide2.jpg",
         "title" => "travel arround the world",
         "text" => "explore, discover, travel",
         "link" => "package.php"
     ],
     [
-        "image" => "images/home-slide-2.jpg",
+        "image" => "images/home-slide1.jpg",
         "title" => "discover the new places",
         "text" => "explore, discover, travel",
         "link" => "package.php"
     ],
     [
-        "image" => "images/home-slide-3.jpg",
+        "image" => "images/home-slide3.jpg",
         "title" => "make your tour worthwhile",
         "text" => "explore, discover, travel",
         "link" => "package.php"
@@ -149,19 +149,19 @@ $packages = [
     [
         "country" => "India",
         "price" => 949,
-        "image" => "images/img-1.jpg",
+        "image" => "images/Arizona.jpg",
         "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
     ],
     [
         "country" => "Switzerland",
         "price" => 799,
-        "image" => "images/img-2.jpg",
+        "image" => "images/NewYork.avif",
         "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
     ],
     [
         "country" => "Latvia",
         "price" => 699,
-        "image" => "images/img-3.jpg",
+        "image" => "images/egjipt.jpg",
         "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
     ]
 ];
