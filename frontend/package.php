@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // përfshi klasën (pika 4 - OOP)
-include '../classes/package.php';
+include 'classes/package.php';
 
 // DATA (pika 3 - arrays)
 $packages = [
