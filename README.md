@@ -1,38 +1,42 @@
 Travel Agency Web Application
 
-This project represents a Travel Agency web application developed using modern web technologies such as HTML, SCSS, and JavaScript. 
-It provides core functionalities including user authentication, travel package management, booking systems, and administrative controls.
+Ky projekt paraqet një aplikacion web për një agjension turistik, i zhvilluar duke përdorur teknologji moderne si HTML, SCSS dhe JavaScript.
+Ai ofron funksionalitete kryesore si autentifikimi i përdoruesve, menaxhimi i paketave turistike, sistemi i rezervimeve dhe kontrolli administrativ.
 
-Technologies Used:
--HTML
--CSS
--SCSS
--JavaScript
--JSON (for data storage)
--Express (server-side routing)
--Multer (file upload handling)
+Teknologjitë e përdorura:
+HTML
+CSS
+SCSS
+JavaScript
+JSON (për ruajtjen e të dhënave)
+Express (për routing në server)
+Multer (për menaxhimin e ngarkimit të skedarëve)
+Karakteristikat kryesore:
+Autentifikimi i përdoruesit
 
-Key Features:
+Aplikacioni përfshin funksionalitete bazë për regjistrim dhe kyçje, të mbështetura me validim të formave për të siguruar saktësinë e të dhënave.
 
--User Authentication
-The application includes basic login and registration functionality, supported by form validation to ensure correct user input.
+Paketat turistike
 
--Travel Packages
-A dedicated packages page displays various travel offers with detailed information and an option for users to proceed with booking.
+Një faqe e dedikuar shfaq paketa të ndryshme udhëtimi me informacione të detajuara dhe mundësi për rezervim.
 
--Admin Panel
-Administrators are provided with a control panel where they can manage travel packages, including adding new ones or removing existing entries.
+Paneli i administratorit
 
--Booking System
-Users can complete a booking form to reserve a selected package. The form includes validation to ensure accurate and complete data submission.
+Administratorët kanë qasje në një panel kontrolli ku mund të menaxhojnë paketat turistike, duke shtuar ose fshirë ato sipas nevojës.
 
--Booking Management
-Administrators can review submitted bookings, send predefined email responses to users, and remove bookings when necessary.
+Sistemi i rezervimit
 
--Usage
-Register/Login: Users can create an account or log in through the authentication pages.
-Book a Package: Navigate to the packages section, choose a destination, and complete the booking form.
-Admin Access: Use the admin panel to manage packages and review user bookings.
+Përdoruesit mund të plotësojnë një formë rezervimi për të rezervuar paketën e zgjedhur. Forma përfshin validim për të garantuar të dhëna të sakta dhe të plota.
+
+Menaxhimi i rezervimeve
+
+Administratorët mund të shqyrtojnë rezervimet, të dërgojnë përgjigje të gatshme përmes email-it dhe të fshijnë rezervimet kur është e nevojshme.
+
+Përdorimi:
+Regjistrim/Kyçje: Përdoruesit mund të krijojnë një llogari ose të kyçen në sistem.
+Rezervimi i një pakete: Vizitoni faqen e paketave, zgjidhni një destinacion dhe plotësoni formularin e rezervimit.
+Qasja e administratorit: Përdorni panelin admin për të menaxhuar paketat dhe për të shqyrtuar rezervimet.
+
 
 
 
