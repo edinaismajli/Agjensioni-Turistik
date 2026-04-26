@@ -2,8 +2,9 @@
 session_start();
 
 // kontroll login (pika 2)
-if(!isset($_SESSION['user'])) {
-    echo "Nuk je i kyqur!";
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../acc/login.php');
+    exit;
 }
 
 // përfshi klasën (pika 4 - OOP)
