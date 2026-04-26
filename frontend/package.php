@@ -2,8 +2,9 @@
 session_start();
 
 // kontroll login (pika 2)
-if(!isset($_SESSION['user'])) {
-    echo "Nuk je i kyqur!";
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../acc/login.php');
+    exit;
 }
 
 // përfshi klasën (pika 4 - OOP)
@@ -16,7 +17,8 @@ $packages = [
     new Package("Latvia", "Hidden gem in Europe", "../images/img-3.jpg"),
     new Package("France", "Romantic destinations", "../images/img-4.jpg"),
     new Package("Japan", "Modern and traditional mix", "../images/img-5.jpg"),
-    new Package("Australia", "Adventure and nature", "../images/img-6.jpg")
+    new Package("Australia", "Adventure and nature", "../images/img-6.jpg"),
+    new Package("Kosova", "Adventure and nature", "../images/img-6.jpg")
 ];
 ?>
 
