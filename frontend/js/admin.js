@@ -70,14 +70,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('logoutButton').addEventListener('click', logout);
 
     // Event listener for managing packages
-    document.querySelector('.sidebar button[data-section-id="managePackages"]').addEventListener('click', function () {
+    document.querySelector('.sidebar button[data-section-id="managePackagesSection"]').addEventListener('click', function () {
         showSection('managePackagesSection');
         fetchPackages();
     });
 
     // Fetch packages function
     function fetchPackages() {
-        fetch('db.json')
+        fetch('../frontend/db.json')
             .then(response => response.json())
             .then(data => {
                 displayPackages(data.packages);
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </button>
                     </div>
                     <div class="card-body">
-                        <img src="${pkg.image}" alt="${pkg.name}" class="package-image">
+                        <img src="../frontend/${pkg.image}" alt="${pkg.name}" class="package-image">
                         <p>${pkg.description}</p>
                     </div>
                 `;
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             deletePackage(event, packageId);
         } else if (event.target.closest('.delete-package-btn')) {
             event.preventDefault(); // Prevent default behavior
-            const packageId = event.target.closest('.delete-pacakge-btn').dataset.packageId;
+            const packageId = event.target.closest('.delete-package-btn').dataset.packageId;
             deletePackage(event, packageId); // Pass event object to the function
         }
         });
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to fetch bookings
 function fetchBookings() {
-    fetch('db.json')
+    fetch('../frontend/db.json')
         .then(response => response.json())
         .then(data => {
             displayBookings(data.bookings);
@@ -270,4 +270,5 @@ function mailCustomer(name, email, phone, address, location, guests, arrival, le
     const body = encodeURIComponent(`Hello dear ${name},\n\nThank you for your booking with us. We have received your booking details and are arranging your trip. Your booking details are as follows:\n\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\nLocation: ${location}\nGuests: ${guests}\nArrival: ${arrival}\nLeaving: ${leaving}\n\nWe will get in touch with you shortly.\n\nBest regards,\nTravel. Agency\nDirectors:\n Kashif Abbas Kazmi\n Muhammad Sarim`);
     window.open(`mailto:${email}?subject=${subject}&body=${body}`);
 }
+
 
