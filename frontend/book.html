@@ -38,7 +38,7 @@
 
    <h1 class="heading-title">Book your trip!</h1>
 
-   <form action="book.php" method="post" class="book-form">
+   <form action="./book.php" method="post" class="book-form">
 
       <div class="flex">
 
@@ -65,7 +65,7 @@
          <div class="inputBox">
             <span>Destination:</span>
 
-            <select name="destination" id="destination-select" required>
+            <select name="destination" required>
                <option value="">Select a destination</option>
                <option value="India">India</option>
                <option value="Switzerland">Switzerland</option>
@@ -79,7 +79,7 @@
 
          <div class="inputBox">
             <span>Guests:</span>
-            <input type="number" name="guests" placeholder="Number of guests" min="1" max="20" required>
+            <input type="number" name="guests" min="1" max="20" placeholder="Number of guests" required>
          </div>
 
          <div class="inputBox">
