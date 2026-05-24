@@ -53,22 +53,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ");
 
             $stmt->execute([
-                $destinationData["id"],
-                $name,
-                $email,
-                $phone,
-                $address,
-                $guests,
-                $arrivals,
-                $leaving
-            ]);
-            $_SESSION["booking_name"] = $name;
-            $_SESSION["booking_email"] = $email;
-            $_SESSION["booking_destination"] = $destination;
+    $destinationData["id"],
+    $name,
+    $email,
+    $phone,
+    $address,
+    $guests,
+    $arrivals,
+    $leaving
+]);
 
-            setcookie("last_destination", $destination, time() + 3600);
+$subject = "Booking Confirmation";
+$message = "Hello $name, your booking for $destination from $arrivals to $leaving was received successfully.";
+$headers = "From: support@travelagency.com";
 
-            echo "Booking completed successfully!";
+@mail($email, $subject, $message, $headers);
+
+$_SESSION["booking_name"] = $name;
+$_SESSION["booking_email"] = $email;
+$_SESSION["booking_destination"] = $destination;
+
+setcookie("last_destination", $destination, time() + 3600);
+
+echo "Booking completed successfully!";
         } else {
             foreach ($errors as $error) {
                 echo htmlspecialchars($error) . "<br>";
