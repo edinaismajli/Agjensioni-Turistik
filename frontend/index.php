@@ -1,3 +1,26 @@
+<?php
+
+session_start();
+require_once '../frontend/db.php';
+require_once '../classes/Services.php';
+
+function sanitize($data){
+   return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+}
+
+    
+try {
+    $database = new Database();
+    $conn = $database->connect();
+}
+catch (Exception $e) {
+    die('Database connection failed: ' . $e->getMessage());
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,36 +36,8 @@
 </head>
 <body>
 
-<?php
-
-//realizimi i pjeses se MENU-se duke implementuar vargjet asociative shumedimensioanle ne PHP
-
-$navItems = [
-    ["name" => "Home", "link" => "index.php"],
-    ["name" => "Package", "link" => "package.php"],
-    ["name" => "Book", "link" => "book.html"],
-    ["name" => "About", "link" => "about.html"],
-    ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
-];
-
-?>
-
-<section class="header">
-   <a href="index.php" class="logo">travel.</a>
-
-   <nav class="navbar">
-      <?php foreach($navItems as $item): ?>
-         <a 
-            href="<?php echo $item['link']; ?>" 
-            class="<?php echo isset($item['class']) ? $item['class'] : ''; ?>">
-            <?php echo $item['name']; ?>
-         </a>
-      <?php endforeach; ?>
-   </nav>
-
-   <div id="menu-btn" class="fas fa-bars"></div>
-</section>
-
+//pjesa e implementimit te navbar-it 
+<?php include 'includes/header.php'; ?>
 
 <?php
 
@@ -214,8 +209,6 @@ usort($packages, function($a, $b) use ($order) {
 
 
 
-
-
 <section class="home-offer">
    <div class="content">
       <h3>upto 50% off</h3>
@@ -225,74 +218,10 @@ usort($packages, function($a, $b) use ($order) {
 
 
 
+//pjesa e implementimit te footer-it 
+<?php include 'includes/footer.php'; ?>
 
-<?php
 
-//realizimi i pjeses se footer-it duke e trajtuar si varg shumedimensional asociativ ne PHP
-
-$footer = [
-    "quick_links" => [
-        ["name" => "Home", "link" => "index.php"],
-        ["name" => "Package", "link" => "package.php"],
-        ["name" => "Book", "link" => "book.php"],
-        ["name" => "About", "link" => "about.php"]
-    ],
-
-    "contact" => [
-        ["icon" => "fas fa-phone", "text" => "0092-301-9583959"],
-        ["icon" => "fas fa-phone", "text" => "0092-301-5273527"],
-        ["icon" => "fas fa-envelope", "text" => "support@travelagency.com"],
-        ["icon" => "fas fa-map", "text" => "Islamabad, Pakistan - 46000"]
-    ],
-
-    "social" => [
-        ["icon" => "fab fa-facebook-f", "name" => "facebook"],
-        ["icon" => "fab fa-twitter", "name" => "twitter"],
-        ["icon" => "fab fa-instagram", "name" => "instagram"],
-        ["icon" => "fab fa-linkedin", "name" => "linkedin"]
-    ]
-];
-
-?>
-
-<section class="footer">
-
-   <div class="box-container">
-
-      <div class="box">
-         <h3>quick links</h3>
-         <?php foreach($footer['quick_links'] as $link): ?>
-            <a href="<?php echo $link['link']; ?>">
-               <i class="fas fa-angle-right"></i> <?php echo $link['name']; ?>
-            </a>
-         <?php endforeach; ?>
-      </div>
-
-      <div class="box">
-         <h3>contact info</h3>
-         <?php foreach($footer['contact'] as $item): ?>
-            <a href="#">
-               <i class="<?php echo $item['icon']; ?>"></i> <?php echo $item['text']; ?>
-            </a>
-         <?php endforeach; ?>
-      </div>
-
-      <div class="box">
-         <h3>follow us</h3>
-         <?php foreach($footer['social'] as $social): ?>
-            <a href="#">
-               <i class="<?php echo $social['icon']; ?>"></i> <?php echo $social['name']; ?>
-            </a>
-         <?php endforeach; ?>
-      </div>
-
-   </div>
-
-   <div class="credit">
-      created by <span>Kashif Abbas Kazmi & Muhammad Sarim</span> | all rights reserved!
-   </div>
-
-</section>
 
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
