@@ -1,20 +1,11 @@
 <?php
 
 session_start();
-require_once '../frontend/db.php';
+require_once 'db.php';
 require_once '../classes/Services.php';
 
 function sanitize($data){
    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-}
-
-    
-try {
-    $database = new Database();
-    $conn = $database->connect();
-}
-catch (Exception $e) {
-    die('Database connection failed: ' . $e->getMessage());
 }
 
 ?>
@@ -37,7 +28,7 @@ catch (Exception $e) {
 <body>
 
 //pjesa e implementimit te navbar-it 
-<?php include 'includes/header.php'; ?>
+<?php include 'header.php'; ?>
 
 <?php
 
@@ -219,7 +210,7 @@ usort($packages, function($a, $b) use ($order) {
 
 
 //pjesa e implementimit te footer-it 
-<?php include 'includes/footer.php'; ?>
+<?php include 'footer.php'; ?>
 
 
 
