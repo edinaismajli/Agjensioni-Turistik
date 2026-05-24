@@ -67,9 +67,9 @@ INSERT INTO packages (destination_id, title, description, duration_days, price) 
 (5, 'Japan Discovery', 'Tokyo and Kyoto travel package.', 8, 1500.00),
 (6, 'Australia Escape', 'Sydney and coastal travel package.', 10, 1800.00);
 
+
 ALTER TABLE packages
 ADD image VARCHAR(255) NULL AFTER price;
-
 UPDATE packages SET image = 'images/img-4.jpg' WHERE id = 1;
 UPDATE packages SET image = 'images/img-8.jpg' WHERE id = 2;
 UPDATE packages SET image = 'images/img-9.jpg' WHERE id = 3;
