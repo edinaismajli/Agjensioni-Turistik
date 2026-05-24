@@ -33,6 +33,7 @@ CREATE TABLE packages (
     description TEXT,
     duration_days INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255) NULL,
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
 ) ENGINE=InnoDB;
 
@@ -59,10 +60,11 @@ INSERT INTO destinations (name, country, price) VALUES
 ('Japan', 'Japan', 1500.00),
 ('Australia', 'Australia', 1800.00);
 
-INSERT INTO packages (destination_id, title, description, duration_days, price) VALUES
-(1, 'India Adventure', 'Cultural trip with guided tours.', 7, 650.00),
-(2, 'Swiss Alps Tour', 'Mountain and lake experience.', 5, 1200.00),
-(3, 'Latvia City Break', 'Short city trip package.', 3, 500.00),
-(4, 'Paris Experience', 'France package with city tours.', 4, 900.00),
-(5, 'Japan Discovery', 'Tokyo and Kyoto travel package.', 8, 1500.00),
-(6, 'Australia Escape', 'Sydney and coastal travel package.', 10, 1800.00);
+INSERT INTO packages (destination_id, title, description, duration_days, price, image) VALUES
+(1, 'India Adventure', 'Cultural trip with guided tours.', 7, 650.00, 'images/img-4.jpg'),
+(2, 'Swiss Alps Tour', 'Mountain and lake experience.', 5, 1200.00, 'images/img-8.jpg'),
+(3, 'Latvia City Break', 'Short city trip package.', 3, 500.00, 'images/img-9.jpg'),
+(4, 'Paris Experience', 'France package with city tours.', 4, 900.00, 'images/img-11.jpg'),
+(5, 'Japan Discovery', 'Tokyo and Kyoto travel package.', 8, 1500.00, 'images/img-12.jpg'),
+(6, 'Australia Escape', 'Sydney and coastal travel package.', 10, 1800.00, 'images/img-6.jpg');
+
