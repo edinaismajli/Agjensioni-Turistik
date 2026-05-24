@@ -27,8 +27,8 @@ function sanitize($data){
 </head>
 <body>
 
-//pjesa e implementimit te navbar-it 
-<?php include 'header.php'; ?>
+<!-- pjesa e implementimit te navbar-it -->
+ <?php include 'header.php'; ?>
 
 <?php
 
@@ -65,9 +65,9 @@ $slides = [
          <?php foreach($slides as $slide): ?>
             <div class="swiper-slide slide" style="background:url(<?php echo $slide['image']; ?>) no-repeat">
                <div class="content">
-                  <span><?php echo $slide['text']; ?></span>
-                  <h3><?php echo $slide['title']; ?></h3>
-                  <a href="<?php echo $slide['link']; ?>" class="btn">discover more</a>
+                  <span><?= sanitize($slide['text']); ?></span>
+                  <h3><?= sanitize($slide['title']); ?></h3>
+                  <a href="<?= sanitize($slide['link']); ?>" class="btn">discover more</a>
                </div>
             </div>
          <?php endforeach; ?>
@@ -132,19 +132,20 @@ $services = [
 //perdorimi i funksionit usort ne PHP per te renditur paketat turistike bazuar ne cmim, duke 
 
 $packages = [
-    [
+    [   "id" => 1,
         "country" => "India",
         "price" => 949,
         "image" => "images/Arizona.jpg",
         "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
     ],
-    [
+    [   "id" => 2,
         "country" => "Switzerland",
         "price" => 799,
         "image" => "images/NewYork.avif",
         "desc" => "Journey with us, where every moment becomes an unforgettable adventure."
     ],
     [
+        "id" => 3,
         "country" => "Latvia",
         "price" => 699,
         "image" => "images/egjipt.jpg",
@@ -174,18 +175,38 @@ usort($packages, function($a, $b) use ($order) {
 
    <div class="box-container">
 
-      <?php foreach($packages as $pkg): ?>
-         <div class="box">
-            <div class="image">
-               <img src="<?php echo $pkg['image']; ?>" alt="">
+      <?php foreach($packages as $index => $pkg): ?>
+       <div class="box" id="package-<?= $index; ?>">
+
+           <div class="image">
+               <img src="<?= sanitize($pkg['image']); ?>" alt="Package Image">
             </div>
             <div class="content">
                <h3>
-                  <?php echo $pkg['country']; ?>
-                  <b> <?php echo $pkg['price']; ?>$</b>
+                  <?= sanitize($pkg['country']); ?>
+                  <b>$<?= sanitize($pkg['price']); ?></b>
                </h3>
-               <p><?php echo $pkg['desc']; ?></p>
-               <a href="book.php" class="btn">book now</a>
+                <p>
+                  <?= sanitize($pkg['desc']); ?>
+               </p>
+
+              <div class="button-group">
+
+   <a href="book.php" class="btn">
+      Book Now
+   </a>
+
+   <button 
+      class="btn book-btn"
+      data-id="<?= $index; ?>"
+      type="button">
+
+      Quick Book
+
+   </button>
+
+</div>
+
             </div>
          </div>
       <?php endforeach; ?>
@@ -195,6 +216,7 @@ usort($packages, function($a, $b) use ($order) {
    <div class="load-more">
       <a href="package.php" class="btn">load more</a>
    </div>
+
 
 </section>
 
@@ -209,13 +231,44 @@ usort($packages, function($a, $b) use ($order) {
 
 
 
-//pjesa e implementimit te footer-it 
-<?php include 'footer.php'; ?>
+<!-- pjesa e implementimit te footer-it -->
+ <?php include 'footer.php'; ?>
 
 
 
 <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
+
+<script>
+
+document.querySelectorAll('.book-btn').forEach(button => {
+
+   button.addEventListener('click', function () {
+
+      const packageId = this.dataset.id;
+
+      fetch('ajax/bookPackage.php', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+         },
+         body: 'package_id=' + packageId
+      })
+      .then(response => response.text())
+      .then(data => {
+
+         if(data === 'success') {
+            alert('Package booked successfully!');
+         } else {
+            alert('Booking failed');
+         }
+      })
+      .catch(error => {
+         console.error(error);
+      });
+   });
+   });
+</script>
 
 </body>
 </html>
