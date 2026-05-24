@@ -3,8 +3,6 @@
 session_start();
 require_once "db.php";
 
-echo "db.php loaded<br>";
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name        = trim($_POST["name"]);
@@ -64,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $arrivals,
                 $leaving
             ]);
-        echo "Inserted booking ID: " . $pdo->lastInsertId() . "<br>";
             $_SESSION["booking_name"] = $name;
             $_SESSION["booking_email"] = $email;
             $_SESSION["booking_destination"] = $destination;
