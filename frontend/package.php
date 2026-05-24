@@ -55,7 +55,7 @@ try {
     <nav class="navbar">
         <a href="index.php">Home</a>
         <a href="package.php">Package</a>
-        <a href="book.html">Book</a>
+        <a href="book.php">Book</a>
         <a href="about.html">About</a>
     </nav>
 
@@ -70,22 +70,39 @@ try {
 
     <h1 class="heading-title">top destinations</h1>
 
+    <?php if ($error !== '') { ?>
+        <p style="text-align:center; color:red; font-size:18px;">
+            <?php echo htmlspecialchars($error); ?>
+        </p>
+    <?php } ?>
+
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') { ?>
+        <div style="text-align:center; margin-bottom:25px;">
+            <a href="add-package.php" class="btn">Add Package</a>
+        </div>
+    <?php } ?>
+
     <div class="box-container">
-        <?php foreach($packages as $p) { ?>
-            <div class="box">
+        <?php foreach ($packages as $p) { ?>
+            <div class="box" data-id="<?php echo (int)$p['id']; ?>">
                 <div class="image">
-                    <img src="<?php echo $p->getImage(); ?>" alt="">
+                    <img src="<?php echo htmlspecialchars($p['image'] ?: 'images/img-4.jpg'); ?>" alt="<?php echo htmlspecialchars($p['title']); ?>">
                 </div>
 
                 <div class="content">
-                    <h3><?php echo $p->getName(); ?></h3>
-                    <p><?php echo $p->getDescription(); ?></p>
+                    <h3><?php echo htmlspecialchars($p['title']); ?></h3>
+                    <p><?php echo htmlspecialchars($p['description']); ?></p>
+                    <p><strong>Destination:</strong> <?php echo htmlspecialchars($p['destination_name']); ?></p>
+                    <p><strong>Country:</strong> <?php echo htmlspecialchars($p['country']); ?></p>
+                    <p><strong>Duration:</strong> <?php echo (int)$p['duration_days']; ?> days</p>
+                    <p><strong>Price:</strong> €<?php echo htmlspecialchars($p['price']); ?></p>
 
-                    <?php if(isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
-                        <a href="#" class="btn">Edit</a>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') { ?>
+                        <a href="edit-package.php?id=<?php echo (int)$p['id']; ?>" class="btn">Edit</a>
+                        <button type="button" class="btn delete-package" data-id="<?php echo (int)$p['id']; ?>">Delete</button>
                     <?php } ?>
 
-                    <a href="book.html" class="btn">book now</a>
+                    <a href="book.php?destination_id=<?php echo (int)$p['destination_id']; ?>" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
@@ -100,7 +117,7 @@ try {
             <h3>quick links</h3>
             <a href="index.php"><i class="fas fa-angle-right"></i> Home</a>
             <a href="package.php"><i class="fas fa-angle-right"></i> Package</a>
-            <a href="book.html"><i class="fas fa-angle-right"></i> Book</a>
+            <a href="book.php"><i class="fas fa-angle-right"></i> Book</a>
             <a href="about.html"><i class="fas fa-angle-right"></i> About</a>
         </div>
 
@@ -112,6 +129,32 @@ try {
 
     </div>
 </section>
+
+<script>
+document.querySelectorAll('.delete-package').forEach(button => {
+    button.addEventListener('click', async function () {
+        if (!confirm('A je i sigurt qe deshiron me fshi kete pakete?')) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('id', this.dataset.id);
+
+        const response = await fetch('../api/delete-package.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            this.closest('.box').remove();
+        } else {
+            alert(result.message || 'Gabim gjate fshirjes.');
+        }
+    });
+});
+</script>
 
 <script src="js/script.js"></script>
 
