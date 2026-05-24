@@ -5,6 +5,17 @@
 section {
   padding: 5rem 10%;
 }
+.button-group{
+   display:flex;
+   flex-direction:column;
+   gap:1rem;
+   margin-top:1rem;
+}
+
+.book-btn{
+   cursor:pointer;
+   border:none;
+}
 
 @keyframes fadeIn {
   0% {
