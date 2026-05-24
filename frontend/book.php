@@ -1,14 +1,9 @@
 <?php
-session_start();
 
-$destinations = [
-    "India",
-    "Switzerland",
-    "Latvia",
-    "France",
-    "Japan",
-    "Australia"
-];
+session_start();
+require_once "db.php";
+
+echo "db.php loaded<br>";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -27,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Invalid name";
     }
 
-    if (!preg_match("/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/", $email)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email";
     }
 
@@ -35,34 +30,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Invalid phone number";
     }
 
-    if (!in_array($destination, $destinations)) {
-        $errors[] = "Invalid destination";
-    }
-
     if ($guests < 1 || $guests > 20) {
         $errors[] = "Guests must be between 1 and 20";
     }
 
-    if (count($errors) == 0) {
+    if (strtotime($arrivals) >= strtotime($leaving)) {
+        $errors[] = "Leaving date must be after arrival date";
+    }
 
-        $userBooking = [
-            "name" => $name,
-            "email" => $email,
-            "destination" => $destination,
-            "guests" => $guests
-        ];
+    try {
+        $stmt = $pdo->prepare("SELECT id FROM destinations WHERE name = ?");
+        $stmt->execute([$destination]);
+        $destinationData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $_SESSION["booking_name"] = $name;
-        $_SESSION["booking_email"] = $email;
-        $_SESSION["booking_destination"] = $destination;
+        if (!$destinationData) {
+            $errors[] = "Invalid destination";
+        }
 
-        setcookie("last_destination", $destination, time() + 3600);
+        if (count($errors) == 0) {
+            $stmt = $pdo->prepare("
+                INSERT INTO bookings 
+                (destination_id, name, email, phone, address, guests, arrivals, leaving)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
 
-        echo "Booking completed successfully!";
+            $stmt->execute([
+                $destinationData["id"],
+                $name,
+                $email,
+                $phone,
+                $address,
+                $guests,
+                $arrivals,
+                $leaving
+            ]);
+        echo "Inserted booking ID: " . $pdo->lastInsertId() . "<br>";
+            $_SESSION["booking_name"] = $name;
+            $_SESSION["booking_email"] = $email;
+            $_SESSION["booking_destination"] = $destination;
 
-    } else {
+            setcookie("last_destination", $destination, time() + 3600);
 
-        print_r($errors);
+            echo "Booking completed successfully!";
+        } else {
+            foreach ($errors as $error) {
+                echo htmlspecialchars($error) . "<br>";
+            }
+        }
+
+    } catch (PDOException $e) {
+        echo "Something went wrong. Please try again.";
     }
 }
 ?>
