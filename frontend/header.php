@@ -3,7 +3,7 @@
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
     ["name" => "Package", "link" => "package.php"],
-    ["name" => "Book", "link" => "book.php"],
+    ["name" => "Book", "link" => "book.html"],
     ["name" => "About", "link" => "about.php"],
     ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
 ];
@@ -12,24 +12,23 @@ $navItems = [
 
 <section class="header">
 
-   <a href="index.php" class="logo">travel.</a>
+    <a href="index.php" class="logo">travel.</a>
 
-   <nav class="navbar">
+    <nav class="navbar">
 
-      <?php foreach($navItems as $item): ?>
+        <?php foreach($navItems as $item): ?>
 
-         <a 
-            href="<?= htmlspecialchars($item['link']); ?>" 
+        <a href="<?= htmlspecialchars($item['link']); ?>"
             class="<?= isset($item['class']) ? htmlspecialchars($item['class']) : ''; ?>">
 
             <?= htmlspecialchars($item['name']); ?>
 
-         </a>
+        </a>
 
-      <?php endforeach; ?>
+        <?php endforeach; ?>
 
-   </nav>
+    </nav>
 
-   <div id="menu-btn" class="fas fa-bars"></div>
+    <div id="menu-btn" class="fas fa-bars"></div>
 
 </section>
