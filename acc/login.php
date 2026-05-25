@@ -27,18 +27,19 @@ if (isset($_POST['submit'])) {
         } elseif (!preg_match($passwordRegex, $password)) {
             $error = "Password duhet te kete 5-20 karaktere.";
         } else {
-            $sql = "SELECT id, username, email, role FROM users WHERE (username = ? OR email = ?) AND password = ?";
-            $stmt = mysqli_prepare($con, $sql);
+        $sql = "SELECT id, username, email, role, password FROM users WHERE username = ? OR email = ?";
+        $stmt = mysqli_prepare($con, $sql);
 
-            if (!$stmt) {
-                $error = "Gabim ne prepare statement: " . mysqli_error($con);
-            } else {
-                mysqli_stmt_bind_param($stmt, "sss", $login, $login, $password);
+        if (!$stmt) {
+            $error = "Gabim ne prepare statement: " . mysqli_error($con);
+        } else {
+            mysqli_stmt_bind_param($stmt, "ss", $login, $login);
 
-                if (mysqli_stmt_execute($stmt)) {
-                    mysqli_stmt_bind_result($stmt, $id, $usernameDb, $email, $role);
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_bind_result($stmt, $id, $usernameDb, $email, $role, $hashedPassword);
 
-                    if (mysqli_stmt_fetch($stmt)) {
+                if (mysqli_stmt_fetch($stmt)) {
+                    if (password_verify($password, $hashedPassword)) {
                         $_SESSION['user_id'] = $id;
                         $_SESSION['username'] = $usernameDb;
                         $_SESSION['email'] = $email;
@@ -58,6 +59,9 @@ if (isset($_POST['submit'])) {
                         }
                     } else {
                         $error = "Username/email ose password gabim.";
+                    }
+                } else {
+                    $error = "Username/email ose password gabim.";
                     }
                 } else {
                     $error = "Gabim gjate login: " . mysqli_stmt_error($stmt);

@@ -52,8 +52,8 @@ CREATE TABLE bookings (
 ) ENGINE=InnoDB;
 
 INSERT INTO users (username, email, password, role) VALUES
-('admin', 'admin@gmail.com', 'admin123', 'admin'),
-('user', 'user@gmail.com', '12345', 'user');
+('admin', 'admin@gmail.com', '$2y$10$c9QzH1QGxujZoy0iccuwueFVB6Ww5qWDM5rTRByNTUeGjN0apVXZq', 'admin'),
+('user', 'user@gmail.com', '$2y$10$Vn65GilgMxWCFwcx.6Bh..u88db1QzmH1v49zptiRSCvlffnrrn0i', 'user');
 
 INSERT INTO destinations (name, country, price) VALUES
 ('India', 'India', 650.00),
