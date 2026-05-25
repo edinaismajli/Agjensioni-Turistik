@@ -71,10 +71,9 @@ $packages = [
 
                     <p class="weather-result"></p>
 
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
-                        <a href="#" class="btn">Edit</a>
-                        <button type="button" class="btn delete-package-btn">Delete</button>
-                    <?php } ?>
+<?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
+    <button type="button" class="btn delete-package-btn">Delete</button>
+<?php } ?>
 
                     <a href="book.html" class="btn">book now</a>
                 </div>
