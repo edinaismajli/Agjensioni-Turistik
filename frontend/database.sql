@@ -12,7 +12,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(120) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
@@ -50,6 +50,10 @@ CREATE TABLE bookings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
 ) ENGINE=InnoDB;
+
+INSERT INTO users (username, email, password, role) VALUES
+('admin', 'admin@gmail.com', 'admin123', 'admin'),
+('user', 'user@gmail.com', '12345', 'user');
 
 INSERT INTO destinations (name, country, price) VALUES
 ('India', 'India', 650.00),
