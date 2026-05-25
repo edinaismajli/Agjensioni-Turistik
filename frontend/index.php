@@ -192,18 +192,12 @@ usort($packages, function($a, $b) use ($order) {
 
               <div class="button-group">
 
-   <a href="book.php" class="btn">
-      Book Now
-   </a>
-
-   <button 
-      class="btn book-btn"
-      data-id="<?= $index; ?>"
-      type="button">
-
-      Quick Book
-
-   </button>
+   <button
+   class="btn book-btn"
+   data-id="<?= sanitize($pkg['id']); ?>"
+   type="button">
+   Book Now
+</button>
 
 </div>
 
@@ -252,13 +246,13 @@ document.querySelectorAll('.book-btn').forEach(button => {
          headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
          },
-         body: 'package_id=' + packageId
+         body: 'package_id=' + encodeURIComponent(packageId)
       })
       .then(response => response.text())
       .then(data => {
 
-         if(data === 'success') {
-            alert('Package booked successfully!');
+          if (data.trim() === 'success') {
+            window.location.href = 'book.php?package_id=' + encodeURIComponent(packageId);
          } else {
             alert('Booking failed');
          }
