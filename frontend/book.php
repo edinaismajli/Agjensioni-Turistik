@@ -3,6 +3,11 @@
 session_start();
 require_once "db.php";
 
+require __DIR__ . '/../vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name        = trim($_POST["name"]);
@@ -67,7 +72,28 @@ $subject = "Booking Confirmation";
 $message = "Hello $name, your booking for $destination from $arrivals to $leaving was received successfully.";
 $headers = "From: support@travelagency.com";
 
-@mail($email, $subject, $message, $headers);
+$mail = new PHPMailer(true);
+
+try {
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'blend.selmani3@student.uni-pr.edu'; 
+    $mail->Password   = 'icak rygp xmxa ispe';   
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+
+    $mail->setFrom('support@travelagency.com', 'Travel Agency');
+    $mail->addAddress($email, $name);
+
+    $mail->Subject = "Booking Confirmation";
+    $mail->Body    = "Hello $name, your booking for $destination from $arrivals to $leaving was received successfully.";
+
+    $mail->send();
+    echo "Booking confirmation email sent!";
+} catch (Exception $e) {
+    echo "Email could not be sent. Error: {$mail->ErrorInfo}";
+}
 
 $_SESSION["booking_name"] = $name;
 $_SESSION["booking_email"] = $email;
