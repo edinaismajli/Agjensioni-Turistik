@@ -55,13 +55,22 @@ $packages = [
         <?php foreach ($packages as $p) { ?>
             <div class="box">
                 <div class="image">
-                    <img src="<?php echo $p->getImage(); ?>" alt="">
+                 <img src="<?php echo htmlspecialchars($p->getImage()); ?>" alt="">
                 </div>
                 <div class="content">
-                    <h3><?php echo $p->getName(); ?></h3>
-                    <p><?php echo $p->getDescription(); ?></p>
+               <h3><?php echo htmlspecialchars($p->getName()); ?></h3>
+  <p><?php echo htmlspecialchars($p->getDescription()); ?></p>
 
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
+<button 
+    type="button" 
+    class="btn weather-btn" 
+    data-destination="<?php echo htmlspecialchars($p->getName()); ?>">
+    Show Weather
+</button>
+
+<p class="weather-result"></p>
+
+<?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
                         <a href="#" class="btn">Edit</a>
                     <?php } ?>
 
@@ -90,6 +99,45 @@ $packages = [
         </div>
     </div>
 </section>
+<script>
+const destinationCoordinates = {
+    India: { latitude: 28.6139, longitude: 77.2090 },
+    Switzerland: { latitude: 46.9480, longitude: 7.4474 },
+    Latvia: { latitude: 56.9496, longitude: 24.1052 },
+    France: { latitude: 48.8566, longitude: 2.3522 },
+    Japan: { latitude: 35.6762, longitude: 139.6503 },
+    Australia: { latitude: -33.8688, longitude: 151.2093 }
+};
 
+document.querySelectorAll('.weather-btn').forEach(button => {
+    button.addEventListener('click', async function () {
+        const destination = this.dataset.destination;
+        const resultElement = this.nextElementSibling;
+        const coordinates = destinationCoordinates[destination];
+
+        if (!coordinates) {
+            resultElement.textContent = 'Weather data not available.';
+            return;
+        }
+
+        resultElement.textContent = 'Loading weather...';
+
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&current=temperature_2m,wind_speed_10m&timezone=auto`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.current) {
+                resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
+            } else {
+                resultElement.textContent = 'Weather data not found.';
+            }
+        } catch (error) {
+            resultElement.textContent = 'Error loading weather.';
+        }
+    });
+});
+</script>
 </body>
 </html>
