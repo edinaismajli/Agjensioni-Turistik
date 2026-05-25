@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require_once '../includes/DB.php';
+require_once '../includes/db.php';
 
 $error = '';
 
