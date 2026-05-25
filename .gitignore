@@ -1,0 +1,18 @@
+# Mos ngarko kredencialet
+.env
+
+# Mos ngarko vendor (Composer packages)
+vendor/
+
+# Mos ngarko file të përkohshëm
+*.log
+*.tmp
+*.cache
+
+# Mos ngarko konfigurime lokale
+.vscode/
+node_modules/
+
+# Mos ngarko file të sistemit
+.DS_Store
+Thumbs.db

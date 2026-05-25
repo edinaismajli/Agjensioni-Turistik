@@ -4,6 +4,10 @@ session_start();
 require_once "db.php";
 
 require __DIR__ . '/../vendor/autoload.php';
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -78,17 +82,23 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'blend.selmani3@student.uni-pr.edu'; 
-    $mail->Password   = 'icak rygp xmxa ispe';   
+    $mail->Username = $_ENV['SMTP_USER'];
+    $mail->Password = $_ENV['SMTP_PASS'];  
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-    $mail->setFrom('blend.selmani3@student.uni-pr.edu', 'Travel Agency');
+    $mail->setFrom($_ENV['SMTP_USER'], 'Travel Agency');
     $mail->addAddress($email, $name);
-    $mail->addCC('blend.selmani3@student.uni-pr.edu');
+    $mail->addCC($_ENV['ADMIN_EMAIL']);
     $mail->Subject = "Booking Confirmation";
-    $mail->Body    = "Hello $name, your booking for $destination from $arrivals to $leaving was received successfully.";
-
+    $mail->isHTML(true);
+    $mail->Body = "
+    <h2>Booking Confirmation</h2>
+    <p>Hello $name,</p>
+    <p>Your booking for <strong>$destination</strong> from <strong>$arrivals</strong> to <strong>$leaving</strong> was received successfully.</p>
+    <p>Thank you for choosing Travel Agency!</p>
+    ";
+    
     $mail->send();
     echo "Booking confirmation email sent!";
 } catch (Exception $e) {
