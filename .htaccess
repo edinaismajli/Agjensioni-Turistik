@@ -1,4 +1,26 @@
+# Blloko qasjen në .env
 <Files .env>
   Order allow,deny
   Deny from all
 </Files>
+
+# Blloko qasjen në .gitignore
+<Files .gitignore>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# Blloko qasjen në composer.json dhe composer.lock
+<FilesMatch "(composer\.json|composer\.lock)">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Blloko qasjen në vendor/
+RedirectMatch 404 ^/vendor/.*
+
+# Blloko qasjen në çdo file .sql (dump databaze)
+<FilesMatch "\.sql$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
