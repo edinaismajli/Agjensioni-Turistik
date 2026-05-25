@@ -83,9 +83,9 @@ try {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-    $mail->setFrom('support@travelagency.com', 'Travel Agency');
+    $mail->setFrom('blend.selmani3@student.uni-pr.edu', 'Travel Agency');
     $mail->addAddress($email, $name);
-
+    $mail->addCC('blend.selmani3@student.uni-pr.edu');
     $mail->Subject = "Booking Confirmation";
     $mail->Body    = "Hello $name, your booking for $destination from $arrivals to $leaving was received successfully.";
 
