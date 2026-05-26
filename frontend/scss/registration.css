@@ -24,14 +24,6 @@ body{
 
   box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
-.wrapper.admin-access{
-  border-color: #222;
-}
-
-.wrapper.admin-access h2::before{
-  background: #222;
-}
-
 .wrapper h2{
   position: relative; 
   font-size: 22px;
@@ -53,13 +45,9 @@ body{
 }
 
 .access-switch{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 10px;
-  margin-bottom: 24px;
-  padding: 6px;
-  background: #f2edf5;
-  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .access-switch label{
@@ -72,11 +60,13 @@ body{
 
 .access-switch span{
   display: block;
-  padding: 12px 10px;
+  min-width: 110px;
+  padding: 10px 14px;
   text-align: center;
   font-size: 15px;
   font-weight: 600;
-  color: #555;
+  color: #8e44ad;
+  border: 1.5px solid #8e44ad;
   border-radius: 6px;
 }
 
@@ -86,20 +76,11 @@ body{
   box-shadow: 0 4px 12px rgba(142, 68, 173, 0.25);
 }
 
-.wrapper.admin-access .access-switch{
-  background: #ededed;
-}
-
-.wrapper.admin-access .access-switch input:checked + span{
-  background: #222;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
 .admin-note{
-  margin: -8px 0 18px;
+  margin: -4px 0 18px;
   padding: 10px 12px;
-  background: #f5f5f5;
-  border-left: 4px solid #222;
+  background: #f2edf5;
+  border-left: 4px solid #8e44ad;
   color: #333;
   font-size: 13px;
   line-height: 1.5;

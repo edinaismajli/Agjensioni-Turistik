@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="scss/styles.css?v=4">
+   <link rel="stylesheet" href="scss/styles.css?v=5">
 
 </head>
 
@@ -324,10 +324,6 @@ usort($packages, function($a, $b) use ($order) {
 
 
     <section class="travel-requests" id="file-tools">
-        <div class="image">
-            <img src="images/about-img.jpg" alt="">
-        </div>
-
         <div class="content">
             <span class="request-label">Shërbim për klientët</span>
             <h3>Kërkesa speciale për udhëtim</h3>
