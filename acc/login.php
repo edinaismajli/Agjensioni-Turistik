@@ -1,107 +1,99 @@
 <?php
-
 session_start();
-require_once("db.php");
 
 $error = "";
 $login = "";
-$password = "";
 
-if (isset($_COOKIE['last_user'])) {
-    $login = $_COOKIE['last_user'];
+if (isset($_COOKIE["last_user"])) {
+    $login = $_COOKIE["last_user"];
 }
 
-if (isset($_POST['submit'])) {
-    $login = trim($_POST['login']);
-    $password = trim($_POST['password']);
+$usersFile = _DIR_ . "/../data/users.php";
 
-    if (empty($login) || empty($password)) {
+if (!file_exists($usersFile)) {
+    die("users.php nuk u gjet te data folder.");
+}
+
+require_once $usersFile;
+
+if (!isset($users) || !is_array($users)) {
+    die("Lista e users nuk u ngarkua.");
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
+    $login = trim($_POST["login"] ?? "");
+    $password = trim($_POST["password"] ?? "");
+
+    if ($login === "" || $password === "") {
         $error = "Ju lutem plotesoni te gjitha fushat.";
     } else {
-        $usernameRegex = '/^[A-Za-z0-9_]{3,20}$/';
-        $emailRegex = '/^[a-zA-Z0-9 _\-\.]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/';
-        $passwordRegex = '/^[A-Za-z0-9]{5,20}$/';
+        $loggedUser = null;
 
-        if (!preg_match($usernameRegex, $login) && !preg_match($emailRegex, $login)) {
-            $error = "Shkruaj username ose email valid.";
-        } elseif (!preg_match($passwordRegex, $password)) {
-            $error = "Password duhet te kete 5-20 karaktere.";
-        } else {
-        $sql = "SELECT id, username, email, role, password FROM users WHERE username = ? OR email = ?";
-        $stmt = mysqli_prepare($con, $sql);
+        foreach ($users as $user) {
+            $userName = $user["username"] ?? "";
+            $userEmail = $user["email"] ?? "";
+            $userPassword = $user["password"] ?? "";
 
-        if (!$stmt) {
-            $error = "Gabim ne prepare statement: " . mysqli_error($con);
-        } else {
-            mysqli_stmt_bind_param($stmt, "ss", $login, $login);
+            $passwordIsValid = password_verify($password, $userPassword) || $password === $userPassword;
 
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_bind_result($stmt, $id, $usernameDb, $email, $role, $hashedPassword);
-
-                if (mysqli_stmt_fetch($stmt)) {
-                    if (password_verify($password, $hashedPassword)) {
-                        $_SESSION['user_id'] = $id;
-                        $_SESSION['username'] = $usernameDb;
-                        $_SESSION['email'] = $email;
-                        $_SESSION['role'] = $role;
-
-                        setcookie('last_user', $usernameDb, time() + 86400 * 7, '/');
-
-                        mysqli_stmt_close($stmt);
-                        mysqli_close($con);
-
-                        if ($role == 'admin') {
-                            header("Location: admin-panel.php");
-                            exit;
-                        } else {
-                            header("Location: ../frontend/index.php");
-                            exit;
-                        }
-                    } else {
-                        $error = "Username/email ose password gabim.";
-                    }
-                } else {
-                    $error = "Username/email ose password gabim.";
-                    }
-                } else {
-                    $error = "Gabim gjate login: " . mysqli_stmt_error($stmt);
-                }
-
-                mysqli_stmt_close($stmt);
+            if (($login === $userName || $login === $userEmail) && $passwordIsValid) {
+                $loggedUser = $user;
+                break;
             }
         }
+
+        if ($loggedUser !== null) {
+            $_SESSION["user_id"] = $loggedUser["id"];
+            $_SESSION["username"] = $loggedUser["username"];
+            $_SESSION["email"] = $loggedUser["email"];
+            $_SESSION["role"] = $loggedUser["role"];
+
+            setcookie("last_user", $loggedUser["username"], time() + (86400 * 7), "/");
+
+            if ($loggedUser["role"] === "admin") {
+                header("Location: admin-panel.php");
+                exit;
+            }
+
+            header("Location: ../frontend/index.php");
+            exit;
+        } else {
+            $error = "Username/email ose password gabim.";
+        }
     }
-
-    mysqli_close($con);
 }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="../frontend/scss/registration.css">
 </head>
+
 <body>
     <div class="wrapper">
         <h2>Login</h2>
 
-        <?php
-        if (isset($_COOKIE['last_user'])) {
-            echo "<p style='margin-top: 18px;'>Welcome back, " . htmlspecialchars($_COOKIE['last_user']) . ".</p>";
-        }
+        <?php if (isset($_COOKIE["last_user"])) : ?>
+        <p style="margin-top: 18px;">
+            Welcome back, <?php echo htmlspecialchars($_COOKIE["last_user"]); ?>.
+        </p>
+        <?php endif; ?>
 
-        if ($error != "") {
-            echo "<div class='errorMessage'>" . htmlspecialchars($error) . "</div>";
-        }
-        ?>
+        <?php if ($error !== "") : ?>
+        <div class="errorMessage">
+            <?php echo htmlspecialchars($error); ?>
+        </div>
+        <?php endif; ?>
 
         <form method="post" action="login.php">
             <div class="input-box1">
-                <input type="text" name="login" placeholder="Enter your username or email" value="<?php echo htmlspecialchars($login); ?>" required>
+                <input type="text" name="login" placeholder="Enter your username or email"
+                    value="<?php echo htmlspecialchars($login); ?>" required>
             </div>
 
             <div class="input-box2">
@@ -111,11 +103,8 @@ if (isset($_POST['submit'])) {
             <div class="input-box button">
                 <input type="submit" name="submit" value="Login Now">
             </div>
-
-            <div class="text">
-                <h3>Don't have an account? <a href="signup.php">Sign Up</a></h3>
-            </div>
         </form>
     </div>
 </body>
+
 </html>
