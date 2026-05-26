@@ -82,6 +82,7 @@ $yearly_guests = 175000;
         color: #222;
     }
 
+    /* STILI PËR HEADER-IN */
     .header {
         position: sticky;
         top: 0;
@@ -100,6 +101,7 @@ $yearly_guests = 175000;
         font-size: 2rem;
         font-weight: bold;
         color: #222;
+        text-transform: lowercase;
     }
 
     .navbar a {
@@ -110,6 +112,14 @@ $yearly_guests = 175000;
 
     .navbar a:hover {
         color: #0099ff;
+    }
+
+    .navbar a.logout {
+        color: red;
+    }
+
+    .navbar a.logout:hover {
+        color: darkred;
     }
 
     #menu-btn {
@@ -206,19 +216,15 @@ $yearly_guests = 175000;
         background: #eee;
     }
 
-    /* RREGULLIMI I RI DHE FINAL PËR KUTITË */
+    /* KUTIJAT KREJTËSISHT TË BARABARTA */
     .slide {
         background: #fff;
         border-radius: 10px;
         padding: 2.5rem 2rem;
         text-align: center;
         box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
-
-        /* I japim një lartësi të caktuar që të trija kutitë të jenë FOTO-KOPJE të njëra-tjetrës */
-        height: 380px !important;
-
+        height: 390px !important;
         position: relative;
-        /* Na ndihmon t'i fiksojmë elementet e fundit poshtë */
     }
 
     .slide .stars {
@@ -238,7 +244,6 @@ $yearly_guests = 175000;
         margin: 0;
     }
 
-    /* Kjo pjesë tani qëndron e gozhduar në fund të kutisë, saktësisht 2.5rem larg fundit */
     .slide .client-info {
         position: absolute;
         bottom: 2.5rem;
@@ -272,6 +277,7 @@ $yearly_guests = 175000;
         object-fit: cover;
     }
 
+    /* STILI PËR FOOTER-IN E RI DINAMIK */
     .footer {
         background: #222;
     }
@@ -286,6 +292,7 @@ $yearly_guests = 175000;
         color: #fff;
         font-size: 1.5rem;
         padding-bottom: 1rem;
+        text-transform: capitalize;
     }
 
     .footer .box a {
@@ -293,6 +300,7 @@ $yearly_guests = 175000;
         color: #ddd;
         padding: 0.7rem 0;
         font-size: 1rem;
+        text-transform: capitalize;
     }
 
     .footer .box a i {
@@ -311,6 +319,7 @@ $yearly_guests = 175000;
         border-top: 1px solid rgba(255, 255, 255, .2);
         color: #fff;
         font-size: 1rem;
+        text-transform: capitalize;
     }
 
     .credit span {
@@ -336,15 +345,15 @@ $yearly_guests = 175000;
         .navbar a {
             display: block;
             margin: 1rem 0;
+            margin-left: 0;
         }
 
         .heading h1 {
             font-size: 3rem;
         }
 
-        /* Në celularë lartësia mund të jetë pak më e lirshme nëse duhet */
         .slide {
-            height: 400px !important;
+            height: 410px !important;
         }
     }
     </style>
@@ -352,18 +361,7 @@ $yearly_guests = 175000;
 
 <body>
 
-    <section class="header">
-        <a href="index.php" class="logo">Travel.</a>
-
-        <nav class="navbar">
-            <a href="index.php">Home</a>
-            <a href="package.php">Package</a>
-            <a href="book.php">Book</a>
-            <a href="about.php">About</a>
-        </nav>
-
-        <div id="menu-btn" class="fas fa-bars"></div>
-    </section>
+    <?php include 'header.php'; ?>
 
     <div class="heading">
         <h1>About Us</h1>
@@ -437,40 +435,25 @@ $yearly_guests = 175000;
         </div>
     </section>
 
-    <section class="footer">
-        <div class="box-container">
-            <div class="box">
-                <h3>Quick Links</h3>
-                <a href="index.php"><i class="fas fa-angle-right"></i> Home</a>
-                <a href="package.php"><i class="fas fa-angle-right"></i> Package</a>
-                <a href="book.php"><i class="fas fa-angle-right"></i> Book</a>
-                <a href="about.php"><i class="fas fa-angle-right"></i> About</a>
-            </div>
-
-            <div class="box">
-                <h3>Contact Info</h3>
-                <a href="#"><i class="fas fa-phone"></i> 0092-301-9583959</a>
-                <a href="#"><i class="fas fa-envelope"></i> support@travelagency.com</a>
-                <a href="#"><i class="fas fa-map"></i> Islamabad, Pakistan</a>
-            </div>
-
-            <div class="box">
-                <h3>Follow Us</h3>
-                <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-            </div>
-        </div>
-
-        <div class="credit">
-            Created by <span>Kashif Abbas Kazmi & Muhammad Sarim</span> | © <?php echo date('Y'); ?> All Rights
-            Reserved!
-        </div>
-    </section>
+    <?php include 'footer.php'; ?>
 
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 
     <script>
+    // Menuja responsive
+    let menu = document.querySelector('#menu-btn');
+    let navbar = document.querySelector('.header .navbar');
+
+    menu.onclick = () => {
+        menu.classList.toggle('fa-times');
+        navbar.classList.toggle('active');
+    };
+
+    window.onscroll = () => {
+        menu.classList.remove('fa-times');
+        navbar.classList.remove('active');
+    };
+
     var swiper = new Swiper(".reviews-slider", {
         loop: true,
         spaceBetween: 20,
