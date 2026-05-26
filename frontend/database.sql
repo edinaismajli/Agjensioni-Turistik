@@ -4,6 +4,7 @@ USE `agjensioni-turistik`;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS travel_requests;
 DROP TABLE IF EXISTS packages;
 DROP TABLE IF EXISTS destinations;
 DROP TABLE IF EXISTS users;
@@ -50,6 +51,13 @@ CREATE TABLE bookings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (destination_id) REFERENCES destinations(id)
 ) ENGINE=InnoDB;
+
+CREATE TABLE travel_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    request_text TEXT NOT NULL,
+    source_file VARCHAR(120) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO users (username, email, password, role) VALUES
 ('admin', 'admin@gmail.com', '$2y$10$c9QzH1QGxujZoy0iccuwueFVB6Ww5qWDM5rTRByNTUeGjN0apVXZq', 'admin'),

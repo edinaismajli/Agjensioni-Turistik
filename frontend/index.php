@@ -8,6 +8,54 @@ function sanitize($data){
    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
+$filePath = __DIR__ . '/kerkesa_udhetareve.txt';
+$fileMessage = '';
+$fileText = '';
+$databaseRequests = [];
+
+if (!file_exists($filePath)) {
+   file_put_contents($filePath, '');
+}
+
+$pdo->exec("
+   CREATE TABLE IF NOT EXISTS travel_requests (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      request_text TEXT NOT NULL,
+      source_file VARCHAR(120) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+");
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
+   $fileText = trim($_POST['file_text'] ?? '');
+   $fileAction = $_POST['file_action'] ?? 'append';
+
+   if ($fileAction === 'clear') {
+      file_put_contents($filePath, '');
+      $pdo->exec("DELETE FROM travel_requests");
+      $fileMessage = 'Lista e kërkesave u pastrua me sukses.';
+   } elseif ($fileText === '') {
+      $fileMessage = 'Shkruaj një kërkesë para se ta ruash.';
+   } elseif ($fileAction === 'overwrite') {
+      file_put_contents($filePath, $fileText . PHP_EOL);
+      $pdo->exec("DELETE FROM travel_requests");
+      $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
+      $stmt->execute([$fileText, basename($filePath)]);
+      $fileMessage = 'Lista e kërkesave u përditësua me sukses.';
+   } else {
+      $file = fopen($filePath, 'a');
+      fwrite($file, date('d.m.Y H:i') . ' - ' . $fileText . PHP_EOL);
+      fclose($file);
+      $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
+      $stmt->execute([$fileText, basename($filePath)]);
+      $fileMessage = 'Kërkesa u ruajt me sukses.';
+   }
+}
+
+$fileContent = file_get_contents($filePath);
+$stmt = $pdo->query("SELECT request_text, source_file, created_at FROM travel_requests ORDER BY id DESC");
+$databaseRequests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 
@@ -22,7 +70,7 @@ function sanitize($data){
    <link rel="icon" type="image/x-icon" href="images/favicon.png">
    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   <link rel="stylesheet" href="scss/styles.css?v=3">
+   <link rel="stylesheet" href="scss/styles.css?v=4">
 
 </head>
 <body>
@@ -212,6 +260,56 @@ usort($packages, function($a, $b) use ($order) {
    </div>
 
 
+</section>
+
+
+<section class="travel-requests" id="file-tools">
+   <div class="image">
+      <img src="images/about-img.jpg" alt="">
+   </div>
+
+   <div class="content">
+      <span class="request-label">Shërbim për klientët</span>
+      <h3>Kërkesa speciale për udhëtim</h3>
+      <p>Shëno kërkesa të klientëve për hotel, transport, ushqim ose destinacion.</p>
+
+      <?php if ($fileMessage !== ''): ?>
+         <p class="request-message"><?= sanitize($fileMessage); ?></p>
+      <?php endif; ?>
+
+      <form action="index.php#file-tools" method="post" class="request-form">
+         <input type="hidden" name="file_form" value="1">
+
+         <label for="file_text">Detajet e kërkesës</label>
+         <textarea id="file_text" name="file_text" rows="5" placeholder="p.sh. Klienti kërkon dhomë me pamje nga deti dhe transport nga aeroporti..."><?= sanitize($fileText); ?></textarea>
+
+         <label for="file_action">Veprimi me listën</label>
+         <select id="file_action" name="file_action">
+            <option value="append">Shto kërkesë të re</option>
+            <option value="overwrite">Përditëso krejt listën</option>
+            <option value="clear">Pastro listën</option>
+         </select>
+
+         <button type="submit" class="btn">Ruaj kërkesën</button>
+      </form>
+
+      <div class="saved-requests">
+         <h4>Kërkesat e ruajtura në databazë</h4>
+         <?php if (empty($databaseRequests)): ?>
+            <p class="empty-requests">Ende nuk ka kërkesa të ruajtura.</p>
+         <?php else: ?>
+            <?php foreach ($databaseRequests as $request): ?>
+               <div class="database-request">
+                  <p><?= sanitize($request['request_text']); ?></p>
+                  <span>
+                     <?= sanitize(date('d.m.Y H:i', strtotime($request['created_at']))); ?>
+                     nga <?= sanitize($request['source_file']); ?>
+                  </span>
+               </div>
+            <?php endforeach; ?>
+         <?php endif; ?>
+      </div>
+   </div>
 </section>
 
 
