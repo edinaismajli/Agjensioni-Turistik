@@ -27,7 +27,7 @@ $packages = [
     <title>Package</title>
 
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
-    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="scss/styles.css">
 </head>
@@ -35,6 +35,7 @@ $packages = [
 
 <section class="header">
     <a href="index.php" class="logo">travel.</a>
+
     <nav class="navbar">
         <a href="index.php">Home</a>
         <a href="package.php">Package</a>
@@ -48,38 +49,37 @@ $packages = [
 </div>
 
 <section class="packages">
-
     <h1 class="heading-title">top destinations</h1>
 
     <div class="box-container">
         <?php foreach ($packages as $p) { ?>
             <div class="box">
                 <div class="image">
-                 <img src="<?php echo htmlspecialchars($p->getImage()); ?>" alt="">
+                    <img src="<?php echo htmlspecialchars($p->getImage()); ?>" alt="<?php echo htmlspecialchars($p->getName()); ?>">
                 </div>
+
                 <div class="content">
-               <h3><?php echo htmlspecialchars($p->getName()); ?></h3>
-  <p><?php echo htmlspecialchars($p->getDescription()); ?></p>
+                    <h3><?php echo htmlspecialchars($p->getName()); ?></h3>
+                    <p><?php echo htmlspecialchars($p->getDescription()); ?></p>
 
-<button 
-    type="button" 
-    class="btn weather-btn" 
-    data-destination="<?php echo htmlspecialchars($p->getName()); ?>">
-    Show Weather
-</button>
+                    <button
+                        type="button"
+                        class="btn weather-btn"
+                        data-destination="<?php echo htmlspecialchars($p->getName()); ?>">
+                        Show Weather
+                    </button>
 
-<p class="weather-result"></p>
+                    <p class="weather-result"></p>
 
 <?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
-                        <a href="#" class="btn">Edit</a>
-                    <?php } ?>
+    <button type="button" class="btn delete-package-btn">Delete</button>
+<?php } ?>
 
                     <a href="book.html" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
     </div>
-
 </section>
 
 <section class="footer">
@@ -99,6 +99,7 @@ $packages = [
         </div>
     </div>
 </section>
+
 <script>
 const destinationCoordinates = {
     India: { latitude: 28.6139, longitude: 77.2090 },
@@ -138,6 +139,17 @@ document.querySelectorAll('.weather-btn').forEach(button => {
         }
     });
 });
+
+document.querySelectorAll('.delete-package-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        if (!confirm('A je i sigurt qe deshiron me fshi kete pakete?')) {
+            return;
+        }
+
+        this.closest('.box').remove();
+    });
+});
 </script>
+
 </body>
 </html>
