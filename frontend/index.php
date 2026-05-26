@@ -8,10 +8,21 @@ function sanitize($data){
    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
-$filePath = __DIR__ . '/kerkesa_udhetareve.txt';
+$requestsFolder = __DIR__ . '/kerkesat';
+$oldFilePath = __DIR__ . '/kerkesa_udhetareve.txt';
+$filePath = $requestsFolder . '/kerkesa_udhetareve.txt';
+$displayFilePath = 'kerkesat/kerkesa_udhetareve.txt';
 $fileMessage = '';
 $fileText = '';
 $databaseRequests = [];
+
+if (!is_dir($requestsFolder)) {
+   mkdir($requestsFolder, 0777, true);
+}
+
+if (!file_exists($filePath) && file_exists($oldFilePath)) {
+   copy($oldFilePath, $filePath);
+}
 
 if (!file_exists($filePath)) {
    file_put_contents($filePath, '');
@@ -25,6 +36,9 @@ $pdo->exec("
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
+
+$stmt = $pdo->prepare("UPDATE travel_requests SET source_file = ? WHERE source_file = ?");
+$stmt->execute([$displayFilePath, 'kerkesa_udhetareve.txt']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
    $fileText = trim($_POST['file_text'] ?? '');
@@ -40,14 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
       file_put_contents($filePath, $fileText . PHP_EOL);
       $pdo->exec("DELETE FROM travel_requests");
       $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
-      $stmt->execute([$fileText, basename($filePath)]);
+      $stmt->execute([$fileText, $displayFilePath]);
       $fileMessage = 'Lista e kërkesave u përditësua me sukses.';
    } else {
       $file = fopen($filePath, 'a');
       fwrite($file, date('d.m.Y H:i') . ' - ' . $fileText . PHP_EOL);
       fclose($file);
       $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
-      $stmt->execute([$fileText, basename($filePath)]);
+      $stmt->execute([$fileText, $displayFilePath]);
       $fileMessage = 'Kërkesa u ruajt me sukses.';
    }
 }
