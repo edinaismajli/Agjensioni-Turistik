@@ -112,23 +112,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Home - Travel Agency Website</title>
-   <link rel="icon" type="image/x-icon" href="images/favicon.png">
-   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   <link rel="stylesheet" href="scss/styles.css?v=4">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Travel Agency Website</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="scss/styles.css?v=4">
 
 </head>
+
 <body>
 
-<!-- pjesa e implementimit te navbar-it -->
- <?php include 'header.php'; ?>
+    <!-- pjesa e implementimit te navbar-it -->
+    <?php include 'header.php'; ?>
 
-<?php
+    <?php
 
 //paraqitja e pjeses se sliderit duke e trajtuar si varg shumedimensional asociativ ne PHP
 
@@ -154,32 +156,32 @@ $slides = [
 ];
 
 ?>
-<section class="home">
+    <section class="home">
 
-   <div class="swiper home-slider">
+        <div class="swiper home-slider">
 
-      <div class="swiper-wrapper">
+            <div class="swiper-wrapper">
 
-         <?php foreach($slides as $slide): ?>
-            <div class="swiper-slide slide" style="background:url(<?php echo $slide['image']; ?>) no-repeat">
-               <div class="content">
-                  <span><?= sanitize($slide['text']); ?></span>
-                  <h3><?= sanitize($slide['title']); ?></h3>
-                  <a href="<?= sanitize($slide['link']); ?>" class="btn">discover more</a>
-               </div>
+                <?php foreach($slides as $slide): ?>
+                <div class="swiper-slide slide" style="background:url(<?php echo $slide['image']; ?>) no-repeat">
+                    <div class="content">
+                        <span><?= sanitize($slide['text']); ?></span>
+                        <h3><?= sanitize($slide['title']); ?></h3>
+                        <a href="<?= sanitize($slide['link']); ?>" class="btn">discover more</a>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+
             </div>
-         <?php endforeach; ?>
-         
-      </div>
 
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
 
-   </div>
+        </div>
 
-</section>
+    </section>
 
-<?php
+    <?php
 
 //pjesa e implementimit te sherbimeve duke krijuar nje klase Service ne PHP dhe duke e trajtuar si objekt te klases Service
 
@@ -195,37 +197,40 @@ $services = [
 ];
 ?>
 
-<section class="services">
+    <section class="services">
 
-   <h1 class="heading-title"> our services </h1>
+        <h1 class="heading-title"> our services </h1>
 
-   <div class="box-container">
+        <div class="box-container">
 
-      <?php
+            <?php
       foreach($services as $service) {
           echo $service->render();
       }
       ?>
 
-   </div>
+        </div>
 
-</section>
+    </section>
 
-<section class="home-about">
+    <section class="home-about">
 
-   <div class="image">
-      <img src="images/about-img.jpg" alt="">
-   </div>
+        <div class="image">
+            <img src="images/about-img.jpg" alt="">
+        </div>
 
-   <div class="content">
-      <h3>about us</h3>
-      <p>Welcome to our vibrant world of travel and exploration! At Travel. , we are passionate about crafting unforgettable journeys that unveil the beauty of diverse destinations. With a commitment to excellence, we invite you to embark on a personalized adventure, where each moment is a story waiting to be discovered.</p>
-      <a href="about.html" class="btn">read more</a>
-   </div>
+        <div class="content">
+            <h3>about us</h3>
+            <p>Welcome to our vibrant world of travel and exploration! At Travel. , we are passionate about crafting
+                unforgettable journeys that unveil the beauty of diverse destinations. With a commitment to excellence,
+                we invite you to embark on a personalized adventure, where each moment is a story waiting to be
+                discovered.</p>
+            <a href="about.php" class="btn">read more</a>
+        </div>
 
-</section>
+    </section>
 
-<?php
+    <?php
 
 //perdorimi i funksionit usort ne PHP per te renditur paketat turistike bazuar ne cmim, duke 
 
@@ -262,182 +267,182 @@ usort($packages, function($a, $b) use ($order) {
 ?>
 
 
-<section class="home-packages">
+    <section class="home-packages">
 
-   <h1 class="heading-title"> our packages </h1>
+        <h1 class="heading-title"> our packages </h1>
 
-   <div style="text-align:center; margin:20px;">
-   <button class="btn sort-btn" data-order="asc">Lowest Price</button>
-   <button class="btn sort-btn" data-order="desc">Highest Price</button>
-</div>
+        <div style="text-align:center; margin:20px;">
+            <button class="btn sort-btn" data-order="asc">Lowest Price</button>
+            <button class="btn sort-btn" data-order="desc">Highest Price</button>
+        </div>
 
-   <div class="box-container">
+        <div class="box-container">
 
-      <?php foreach($packages as $index => $pkg): ?>
-       <div class="box" id="package-<?= $index; ?>">
+            <?php foreach($packages as $index => $pkg): ?>
+            <div class="box" id="package-<?= $index; ?>">
 
-           <div class="image">
-               <img src="<?= sanitize($pkg['image']); ?>" alt="Package Image">
+                <div class="image">
+                    <img src="<?= sanitize($pkg['image']); ?>" alt="Package Image">
+                </div>
+                <div class="content">
+                    <h3>
+                        <?= sanitize($pkg['country']); ?>
+                        <b>$<?= sanitize($pkg['price']); ?></b>
+                    </h3>
+                    <p>
+                        <?= sanitize($pkg['desc']); ?>
+                    </p>
+
+                    <div class="button-group">
+
+                        <button class="btn book-btn" data-id="<?= sanitize($pkg['id']); ?>" type="button">
+                            Book Now
+                        </button>
+
+                    </div>
+
+                </div>
             </div>
-            <div class="content">
-               <h3>
-                  <?= sanitize($pkg['country']); ?>
-                  <b>$<?= sanitize($pkg['price']); ?></b>
-               </h3>
-                <p>
-                  <?= sanitize($pkg['desc']); ?>
-               </p>
+            <?php endforeach; ?>
 
-              <div class="button-group">
+        </div>
 
-   <button
-   class="btn book-btn"
-   data-id="<?= sanitize($pkg['id']); ?>"
-   type="button">
-   Book Now
-</button>
-
-</div>
-
-            </div>
-         </div>
-      <?php endforeach; ?>
-
-   </div>
-
-   <div class="load-more">
-      <a href="package.php" class="btn">load more</a>
-   </div>
+        <div class="load-more">
+            <a href="package.php" class="btn">load more</a>
+        </div>
 
 
-</section>
+    </section>
 
 
-<section class="home-offer">
-   <div class="content">
-      <h3>upto 50% off</h3>
-      <a href="book1.php" class="btn">book now</a>
-   </div>
-</section>
+    <section class="home-offer">
+        <div class="content">
+            <h3>upto 50% off</h3>
+            <a href="book1.php" class="btn">book now</a>
+        </div>
+    </section>
 
 
-<section class="travel-requests" id="file-tools">
-   <div class="image">
-      <img src="images/about-img.jpg" alt="">
-   </div>
+    <section class="travel-requests" id="file-tools">
+        <div class="image">
+            <img src="images/about-img.jpg" alt="">
+        </div>
 
-   <div class="content">
-      <span class="request-label">Shërbim për klientët</span>
-      <h3>Kërkesa speciale për udhëtim</h3>
-      <p>Shëno kërkesa të klientëve për hotel, transport, ushqim ose destinacion.</p>
+        <div class="content">
+            <span class="request-label">Shërbim për klientët</span>
+            <h3>Kërkesa speciale për udhëtim</h3>
+            <p>Shëno kërkesa të klientëve për hotel, transport, ushqim ose destinacion.</p>
 
-      <p class="request-message" id="request-message" <?php if ($fileMessage === ''): ?>style="display:none;"<?php endif; ?>>
-         <?= sanitize($fileMessage); ?>
-      </p>
+            <p class="request-message" id="request-message" <?php if ($fileMessage === ''): ?>style="display:none;"
+                <?php endif; ?>>
+                <?= sanitize($fileMessage); ?>
+            </p>
 
-      <form action="index.php#file-tools" method="post" class="request-form" id="request-form">
-         <input type="hidden" name="file_form" value="1">
+            <form action="index.php#file-tools" method="post" class="request-form" id="request-form">
+                <input type="hidden" name="file_form" value="1">
 
-         <label for="file_text">Detajet e kërkesës</label>
-         <textarea id="file_text" name="file_text" rows="5" placeholder="p.sh. Klienti kërkon dhomë me pamje nga deti dhe transport nga aeroporti..."><?= sanitize($fileText); ?></textarea>
+                <label for="file_text">Detajet e kërkesës</label>
+                <textarea id="file_text" name="file_text" rows="5"
+                    placeholder="p.sh. Klienti kërkon dhomë me pamje nga deti dhe transport nga aeroporti..."><?= sanitize($fileText); ?></textarea>
 
-         <button type="submit" class="btn">Ruaj kërkesën</button>
-      </form>
-   </div>
-</section>
+                <button type="submit" class="btn">Ruaj kërkesën</button>
+            </form>
+        </div>
+    </section>
 
 
 
 
 
 
-<!-- pjesa e implementimit te footer-it -->
- <?php include 'footer.php'; ?>
+    <!-- pjesa e implementimit te footer-it -->
+    <?php include 'footer.php'; ?>
 
 
 
-<script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-<script src="js/script.js"></script>
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script src="js/script.js"></script>
 
-<script>
+    <script>
+    document.querySelectorAll('.book-btn').forEach(button => {
 
-document.querySelectorAll('.book-btn').forEach(button => {
+        button.addEventListener('click', function() {
 
-   button.addEventListener('click', function () {
+            const packageId = this.dataset.id;
 
-      const packageId = this.dataset.id;
+            fetch('ajax/bookPackage.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'package_id=' + encodeURIComponent(packageId)
+                })
+                .then(response => response.text())
+                .then(data => {
 
-      fetch('ajax/bookPackage.php', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-         },
-         body: 'package_id=' + encodeURIComponent(packageId)
-      })
-      .then(response => response.text())
-      .then(data => {
+                    if (data.trim() === 'success') {
+                        window.location.href = 'book1.php';
+                    } else {
+                        alert('Booking failed');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    });
 
-          if (data.trim() === 'success') {
-             window.location.href = 'book1.php';
-         } else {
-            alert('Booking failed');
-         }
-      })
-      .catch(error => {
-         console.error(error);
-      });
-   });
-   });
+    document.querySelectorAll('.sort-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const order = this.dataset.order;
 
-   document.querySelectorAll('.sort-btn').forEach(button => {
-  button.addEventListener('click', function () {
-    const order = this.dataset.order;
+            fetch('ajax/sortPackages.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'order=' + order
+                })
+                .then(res => res.text())
+                .then(html => {
+                    // rifresko vetëm container-in e paketave
+                    document.querySelector('.home-packages .box-container').innerHTML = html;
+                })
+                .catch(err => console.error(err));
+        });
+    });
 
-    fetch('ajax/sortPackages.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'order=' + order
-    })
-    .then(res => res.text())
-    .then(html => {
-      // rifresko vetëm container-in e paketave
-      document.querySelector('.home-packages .box-container').innerHTML = html;
-    })
-    .catch(err => console.error(err));
-  });
-});
+    const requestForm = document.getElementById('request-form');
+    const requestMessage = document.getElementById('request-message');
 
-const requestForm = document.getElementById('request-form');
-const requestMessage = document.getElementById('request-message');
+    if (requestForm && requestMessage) {
+        requestForm.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-if (requestForm && requestMessage) {
-   requestForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+            const formData = new FormData(requestForm);
+            formData.append('ajax_request', '1');
 
-      const formData = new FormData(requestForm);
-      formData.append('ajax_request', '1');
+            fetch('index.php#file-tools', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    requestMessage.textContent = data.message;
+                    requestMessage.style.display = 'block';
 
-      fetch('index.php#file-tools', {
-         method: 'POST',
-         body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-         requestMessage.textContent = data.message;
-         requestMessage.style.display = 'block';
-
-         if (data.success) {
-            requestForm.reset();
-         }
-      })
-      .catch(() => {
-         requestMessage.textContent = 'Kërkesa nuk u ruajt. Provo përsëri.';
-         requestMessage.style.display = 'block';
-      });
-   });
-}
-
-</script>
+                    if (data.success) {
+                        requestForm.reset();
+                    }
+                })
+                .catch(() => {
+                    requestMessage.textContent = 'Kërkesa nuk u ruajt. Provo përsëri.';
+                    requestMessage.style.display = 'block';
+                });
+        });
+    }
+    </script>
 
 </body>
+
 </html>
