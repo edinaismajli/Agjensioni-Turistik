@@ -3,7 +3,7 @@
 $navItems = [
     ["name" => "Home", "link" => "index.php"],
     ["name" => "Package", "link" => "package.php"],
-    ["name" => "Book", "link" => "book.html"],
+    ["name" => "Book", "link" => "book1.php"],
     ["name" => "About", "link" => "about.php"],
     ["name" => "Login", "link" => "../acc/login.php"],
     ["name" => "Sign Up", "link" => "../acc/signup.php"],
