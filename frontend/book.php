@@ -91,15 +91,74 @@ try {
     $mail->addAddress($email, $name);
     $mail->addCC($_ENV['ADMIN_EMAIL']);
     $mail->Subject = "Booking Confirmation";
-    $mail->isHTML(true);
-    $mail->Body = "
-    <h2>Booking Confirmation</h2>
+    $mail->Subject = "Booking Confirmation";
+$mail->isHTML(true);
+$mail->Body = "
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; }
+    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; }
+    h2 { color: #0066cc; }
+    .details p { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <h2>📩 Booking Confirmation</h2>
     <p>Hello $name,</p>
     <p>Your booking for <strong>$destination</strong> from <strong>$arrivals</strong> to <strong>$leaving</strong> was received successfully.</p>
+    <p><strong>Guests:</strong> $guests</p>
+    <p><strong>Phone:</strong> $phone</p>
+    <p><strong>Address:</strong> $address</p>
     <p>Thank you for choosing Travel Agency!</p>
-    ";
-    
+    <hr>
+    <p style='font-size:12px;color:#777;'>Travel Agency System</p>
+  </div>
+</body>
+</html>
+";
+
+
     $mail->send();
+
+    $adminMail = new PHPMailer(true);
+$adminMail->isSMTP();
+$adminMail->Host       = 'smtp.gmail.com';
+$adminMail->SMTPAuth   = true;
+$adminMail->Username   = $_ENV['SMTP_USER'];
+$adminMail->Password   = $_ENV['SMTP_PASS'];
+$adminMail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+$adminMail->Port       = 587;
+
+$adminMail->setFrom($_ENV['SMTP_USER'], 'Travel Agency System');
+$adminMail->addAddress($_ENV['ADMIN_EMAIL'], 'Administrator');
+$adminMail->Subject = "New Booking Received - $destination";
+$adminMail->isHTML(true);
+$adminMail->Body = "
+<!DOCTYPE html>
+<html>
+<head><meta charset='UTF-8'></head>
+<body>
+  <h2>📩 New Booking Received</h2>
+  <p>A new booking has been made. Here are the details:</p>
+  <ul>
+    <li><strong>Name:</strong> $name</li>
+    <li><strong>Email:</strong> $email</li>
+    <li><strong>Phone:</strong> $phone</li>
+    <li><strong>Address:</strong> $address</li>
+    <li><strong>Destination:</strong> $destination</li>
+    <li><strong>Guests:</strong> $guests</li>
+    <li><strong>Arrival:</strong> $arrivals</li>
+    <li><strong>Leaving:</strong> $leaving</li>
+  </ul>
+  <p>Please review and prepare arrangements accordingly.</p>
+</body>
+</html>
+";
+$adminMail->send();
     echo "Booking confirmation email sent!";
 } catch (Exception $e) {
     echo "Email could not be sent. Error: {$mail->ErrorInfo}";
