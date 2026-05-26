@@ -83,7 +83,7 @@ $packageImages = [
                         </button>
                     <?php } ?>
 
-                    <a href="book.html" class="btn">book now</a>
+                    <a href="book1.php" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
