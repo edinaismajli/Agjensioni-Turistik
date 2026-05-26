@@ -252,7 +252,7 @@ document.querySelectorAll('.book-btn').forEach(button => {
       .then(data => {
 
           if (data.trim() === 'success') {
-            window.location.href = 'book.php?package_id=' + encodeURIComponent(packageId);
+             window.location.href = 'book.html';
          } else {
             alert('Booking failed');
          }
