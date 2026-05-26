@@ -6,15 +6,24 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-include '../classes/package.php';
+require_once "db.php";
 
-$packages = [
-    new Package("India", "Explore the rich culture of India", "images/img-4.jpg"),
-    new Package("Switzerland", "Beautiful mountains and lakes", "images/img-8.jpg"),
-    new Package("Latvia", "Hidden gem in Europe", "images/img-9.jpg"),
-    new Package("France", "Romantic destinations", "images/img-11.jpg"),
-    new Package("Japan", "Modern and traditional mix", "images/img-12.jpg"),
-    new Package("Australia", "Adventure and nature", "images/img-6.jpg")
+$stmt = $pdo->query("
+    SELECT packages.*, destinations.name AS destination_name
+    FROM packages
+    INNER JOIN destinations ON packages.destination_id = destinations.id
+    ORDER BY packages.id ASC
+");
+
+$packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$packageImages = [
+    "India" => "images/img-4.jpg",
+    "Switzerland" => "images/img-8.jpg",
+    "Latvia" => "images/img-9.jpg",
+    "France" => "images/img-11.jpg",
+    "Japan" => "images/img-12.jpg",
+    "Australia" => "images/img-6.jpg"
 ];
 ?>
 
@@ -43,30 +52,38 @@ $packages = [
     <h1 class="heading-title">top destinations</h1>
 
     <div class="box-container">
-        <?php foreach ($packages as $p) { ?>
-            <div class="box">
+        <?php foreach ($packages as $p) { 
+            $destinationName = $p["destination_name"];
+            $image = $packageImages[$destinationName] ?? "images/img-1.jpg";
+        ?>
+            <div class="box" id="package-box-<?php echo $p['id']; ?>">
                 <div class="image">
-                    <img src="<?php echo htmlspecialchars($p->getImage()); ?>" alt="<?php echo htmlspecialchars($p->getName()); ?>">
+                    <img src="<?php echo htmlspecialchars($image); ?>" alt="<?php echo htmlspecialchars($destinationName); ?>">
                 </div>
 
                 <div class="content">
-                    <h3><?php echo htmlspecialchars($p->getName()); ?></h3>
-                    <p><?php echo htmlspecialchars($p->getDescription()); ?></p>
+                    <h3><?php echo htmlspecialchars($p["title"]); ?></h3>
+                    <p><?php echo htmlspecialchars($p["description"]); ?></p>
 
-                    <button
-                        type="button"
-                        class="btn weather-btn"
-                        data-destination="<?php echo htmlspecialchars($p->getName()); ?>">
+                    <button 
+                        type="button" 
+                        class="btn weather-btn" 
+                        data-destination="<?php echo htmlspecialchars($destinationName); ?>">
                         Show Weather
                     </button>
 
                     <p class="weather-result"></p>
 
-<?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
-    <button type="button" class="btn delete-package-btn">Delete</button>
-<?php } ?>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") { ?>
+                        <button 
+                            type="button" 
+                            class="btn delete-package-btn"
+                            data-id="<?php echo $p['id']; ?>">
+                            Delete
+                        </button>
+                    <?php } ?>
 
-                    <a href="book1.php" class="btn">book now</a>
+                    <a href="book.html" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
@@ -105,7 +122,7 @@ document.querySelectorAll('.weather-btn').forEach(button => {
             const data = await response.json();
 
             if (data.current) {
-               resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
+                resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
             } else {
                 resultElement.textContent = 'Weather data not found.';
             }
@@ -116,12 +133,33 @@ document.querySelectorAll('.weather-btn').forEach(button => {
 });
 
 document.querySelectorAll('.delete-package-btn').forEach(button => {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', async function () {
+        const packageId = this.dataset.id;
+
         if (!confirm('A je i sigurt qe deshiron me fshi kete pakete?')) {
             return;
         }
 
-        this.closest('.box').remove();
+        const formData = new FormData();
+        formData.append('id', packageId);
+
+        try {
+            const response = await fetch('delete-package.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('package-box-' + packageId).remove();
+                alert('Paketa u fshi me sukses.');
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            alert('Gabim gjate fshirjes.');
+        }
     });
 });
 </script>
