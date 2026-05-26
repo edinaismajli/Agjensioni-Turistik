@@ -43,12 +43,13 @@ try {
         "success" => true,
         "message" => "Package added successfully."
     ]);
-} catch (PDOException $e) {
-    $pdo->rollBack();
+}  catch (PDOException $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
 
     echo json_encode([
         "success" => false,
-        "message" => "Database error."
+        "message" => "Database error: " . $e->getMessage()
     ]);
 }
-?>

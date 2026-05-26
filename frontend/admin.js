@@ -1,138 +1,162 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const sectionButtons = document.querySelectorAll("[data-section-id]");
-    const sections = document.querySelectorAll(".content-section");
+  const sectionButtons = document.querySelectorAll("[data-section-id]");
+  const sections = document.querySelectorAll(".content-section");
 
-    const addPackageForm = document.getElementById("addPackageForm");
-    const bookingCards = document.getElementById("bookingCards");
-    const refreshBookings = document.getElementById("refreshBookings");
-    const logoutButton = document.getElementById("logoutButton");
+  const addPackageForm = document.getElementById("addPackageForm");
+  const bookingCards = document.getElementById("bookingCards");
+  const refreshBookings = document.getElementById("refreshBookings");
+  const logoutButton = document.getElementById("logoutButton");
 
-    function showSection(sectionId) {
-        sections.forEach(section => {
-            section.classList.add("hidden");
-        });
-
-        const selectedSection = document.getElementById(sectionId);
-
-        if (selectedSection) {
-            selectedSection.classList.remove("hidden");
-        }
-
-        if (sectionId === "bookings") {
-            loadBookings();
-        }
-    }
-
-    sectionButtons.forEach(button => {
-        button.addEventListener("click", function () {
-            showSection(this.dataset.sectionId);
-        });
+  function showSection(sectionId) {
+    sections.forEach((section) => {
+      section.classList.add("hidden");
     });
 
-    if (addPackageForm) {
-        addPackageForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
+    const selectedSection = document.getElementById(sectionId);
 
-            const formData = new FormData();
-            formData.append("packageName", document.getElementById("packageName").value);
-            formData.append("packageDescription", document.getElementById("packageDescription").value);
-            formData.append("packageCountry", document.getElementById("packageCountry").value);
-            formData.append("packageDuration", document.getElementById("packageDuration").value);
-            formData.append("packagePrice", document.getElementById("packagePrice").value);
+    if (selectedSection) {
+      selectedSection.classList.remove("hidden");
+    }
 
-            try {
-                const response = await fetch("add-package.php", {
-                    method: "POST",
-                    body: formData
-                });
+    if (sectionId === "bookings") {
+      loadBookings();
+    }
+  }
 
-                const result = await response.json();
+  sectionButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      showSection(this.dataset.sectionId);
+    });
+  });
 
-                if (result.success) {
-                    alert("Paketa u shtua me sukses.");
-                    addPackageForm.reset();
-                } else {
-                    alert(result.message || "Gabim gjate shtimit te paketes.");
-                }
-            } catch (error) {
-                alert("Gabim gjate shtimit te paketes.");
-            }
+  if (addPackageForm) {
+    addPackageForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append(
+        "packageName",
+        document.getElementById("packageName").value,
+      );
+      formData.append(
+        "packageDescription",
+        document.getElementById("packageDescription").value,
+      );
+      formData.append(
+        "packageCountry",
+        document.getElementById("packageCountry").value,
+      );
+      formData.append(
+        "packageDuration",
+        document.getElementById("packageDuration").value,
+      );
+      formData.append(
+        "packagePrice",
+        document.getElementById("packagePrice").value,
+      );
+
+      try {
+        const response = await fetch("add-package.php", {
+          method: "POST",
+          body: formData,
         });
-    }
 
-    async function loadBookings() {
-        if (!bookingCards) {
-            return;
+        const text = await response.text();
+        console.log("add-package.php response:", text);
+
+        const result = JSON.parse(text);
+
+        if (result.success) {
+          alert("Paketa u shtua me sukses.");
+          addPackageForm.reset();
+          window.location.href = "../frontend/package.php";
+        } else {
+          alert(result.message || "Gabim gjate shtimit te paketes.");
         }
+      } catch (error) {
+        console.error("Add package error:", error);
+        alert("Gabim gjate shtimit te paketes. Shiko Console.");
+      }
+    });
+  }
 
-        bookingCards.innerHTML = "<p>Loading bookings...</p>";
-
-        try {
-            const response = await fetch("get-bookings.php");
-            const result = await response.json();
-
-            if (!result.success) {
-                bookingCards.innerHTML = `<p>${result.message}</p>`;
-                return;
-            }
-
-            if (result.bookings.length === 0) {
-                bookingCards.innerHTML = "<p>No bookings found.</p>";
-                return;
-            }
-
-            bookingCards.innerHTML = "";
-
-            result.bookings.forEach(booking => {
-                const card = document.createElement("div");
-                card.className = "booking-card";
-
-                card.innerHTML = `
-                    <h3>${booking.destination_name}</h3>
-                    <p><strong>Name:</strong> ${booking.name}</p>
-                    <p><strong>Email:</strong> ${booking.email}</p>
-                    <p><strong>Phone:</strong> ${booking.phone}</p>
-                    <p><strong>Address:</strong> ${booking.address}</p>
-                    <p><strong>Guests:</strong> ${booking.guests}</p>
-                    <p><strong>Arrivals:</strong> ${booking.arrivals}</p>
-                    <p><strong>Leaving:</strong> ${booking.leaving}</p>
-                    <p><strong>Status:</strong> ${booking.status}</p>
-                `;
-
-                bookingCards.appendChild(card);
-            });
-        } catch (error) {
-            bookingCards.innerHTML = "<p>Error loading bookings.</p>";
-        }
+  async function loadBookings() {
+    if (!bookingCards) {
+      return;
     }
 
-    if (refreshBookings) {
-        refreshBookings.addEventListener("click", function () {
-            loadBookings();
-        });
+    bookingCards.innerHTML = "<p>Loading bookings...</p>";
+
+    try {
+      const response = await fetch("get-bookings.php");
+      const text = await response.text();
+      console.log("get-bookings.php response:", text);
+
+      const result = JSON.parse(text);
+
+      if (!result.success) {
+        bookingCards.innerHTML = `<p>${result.message}</p>`;
+        return;
+      }
+
+      if (result.bookings.length === 0) {
+        bookingCards.innerHTML = "<p>No bookings found.</p>";
+        return;
+      }
+
+      bookingCards.innerHTML = "";
+
+      result.bookings.forEach((booking) => {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+
+        card.innerHTML = `
+          <h3>${booking.destination_name}</h3>
+          <p><strong>Name:</strong> ${booking.name}</p>
+          <p><strong>Email:</strong> ${booking.email}</p>
+          <p><strong>Phone:</strong> ${booking.phone}</p>
+          <p><strong>Address:</strong> ${booking.address}</p>
+          <p><strong>Guests:</strong> ${booking.guests}</p>
+          <p><strong>Arrivals:</strong> ${booking.arrivals}</p>
+          <p><strong>Leaving:</strong> ${booking.leaving}</p>
+          <p><strong>Status:</strong> ${booking.status}</p>
+        `;
+
+        bookingCards.appendChild(card);
+      });
+    } catch (error) {
+      console.error("Load bookings error:", error);
+      bookingCards.innerHTML = "<p>Error loading bookings.</p>";
+    }
+  }
+
+  if (refreshBookings) {
+    refreshBookings.addEventListener("click", function () {
+      loadBookings();
+    });
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      window.location.href = "logout.php";
+    });
+  }
+
+  function updateDateTime() {
+    const dateElement = document.getElementById("date");
+    const timeElement = document.getElementById("time");
+
+    const now = new Date();
+
+    if (dateElement) {
+      dateElement.textContent = now.toLocaleDateString();
     }
 
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function () {
-            window.location.href = "logout.php";
-        });
+    if (timeElement) {
+      timeElement.textContent = now.toLocaleTimeString();
     }
+  }
 
-    function updateDateTime() {
-        const dateElement = document.getElementById("date");
-        const timeElement = document.getElementById("time");
-
-        const now = new Date();
-
-        if (dateElement) {
-            dateElement.textContent = now.toLocaleDateString();
-        }
-
-        if (timeElement) {
-            timeElement.textContent = now.toLocaleTimeString();
-        }
-    }
-
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
 });

@@ -32,7 +32,7 @@ $admin = new Admin(
     <link rel="icon" type="image/x-icon" href="../frontend/images/favicon.png">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="../frontend/scss/admin.css">
+    <link rel="stylesheet" href="../frontend/scss/admin.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -57,30 +57,33 @@ $admin = new Admin(
 
         <button data-section-id="addPackageSection">Add Package</button>
         <button data-section-id="bookings">Manage Bookings</button>
-         <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
+        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
         <button onclick="window.location.href='/Agjensioni-Turistik/frontend/index.php'">Go to Index</button>
 
-    <?php endif; ?>
+        <?php endif; ?>
         <button id="logoutButton">LogOut</button>
     </div>
 
     <div id="mainContent" class="container">
         <div id="addPackageSection" class="content-section">
             <h1 class="header">Add Package</h1>
-<form id="addPackageForm" class="form-addpkg">
-    <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
+            <form id="addPackageForm" class="form-addpkg">
+                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
 
-    <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
+                <textarea id="packageDescription" class="input-field" placeholder="Package Description"
+                    required></textarea>
 
-    <input type="text" id="packageCountry" class="input-field" placeholder="Country" required>
+                <input type="text" id="packageCountry" class="input-field" placeholder="Country" required>
 
-    <input type="number" id="packageDuration" class="input-field" placeholder="Duration Days" min="1" required>
+                <input type="number" id="packageDuration" class="input-field" placeholder="Duration Days" min="1"
+                    required>
 
-    <input type="number" id="packagePrice" class="input-field" placeholder="Price" min="1" step="0.01" required>
+                <input type="number" id="packagePrice" class="input-field" placeholder="Price" min="1" step="0.01"
+                    required>
 
-    <button type="submit" class="action-button">Add Package</button>
-</form>
-    
+                <button type="submit" class="action-button">Add Package</button>
+            </form>
+
         </div>
 
         <div id="bookings" class="content-section hidden">
@@ -100,7 +103,7 @@ $admin = new Admin(
         </div>
     </div>
 
-    <script src="../frontend/js/admin.js"></script>
+    <script src="../frontend/admin.js"></script>
 </body>
 
 </html>
