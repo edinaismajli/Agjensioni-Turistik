@@ -5,23 +5,35 @@ require_once "db.php";
 header("Content-Type: application/json");
 
 if (!isset($_SESSION["role"]) || $_SESSION["role"] !== "admin") {
-    echo json_encode(["success" => false, "message" => "Only admin can delete bookings."]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Only admin can delete packages."
+    ]);
     exit;
 }
 
 $id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
 
 if (!$id) {
-    echo json_encode(["success" => false, "message" => "Invalid booking ID."]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Invalid package ID."
+    ]);
     exit;
 }
 
 try {
-    $stmt = $pdo->prepare("DELETE FROM bookings WHERE id = ?");
+    $stmt = $pdo->prepare("DELETE FROM packages WHERE id = ?");
     $stmt->execute([$id]);
 
-    echo json_encode(["success" => true]);
+    echo json_encode([
+        "success" => true,
+        "message" => "Package deleted successfully."
+    ]);
 } catch (PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Database error."]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 }
 ?>
