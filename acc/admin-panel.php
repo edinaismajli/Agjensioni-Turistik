@@ -1,6 +1,19 @@
 <?php
 require_once __DIR__ . "/db.php";
 
+$stmt = $pdo->prepare("
+    SELECT bookings.*, destinations.name AS destination_name
+    FROM bookings
+    INNER JOIN destinations ON bookings.destination_id = destinations.id
+    ORDER BY bookings.created_at DESC
+");
+$stmt->execute();
+$bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+function clean($value) {
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
 require_once '../includes/session.php';
 require_once '../classes/User.php';
 require_once '../classes/Admin.php';
@@ -85,26 +98,81 @@ $admin = new Admin(
 </form>
 
 
+
+
+
         </div>
 
+        
         <div id="bookings" class="content-section hidden">
-            <h1 class="header">
-                Manage Bookings
-                <button id="refreshBookings" class="refresh-button">
-                    <i class="fas fa-sync-alt"></i> <span id="refreshText">Refresh</span>
+    <h1 class="header">
+        Manage Bookings
+        <button id="refreshBookings" class="refresh-button">
+            <i class="fas fa-sync-alt"></i> <span id="refreshText">Refresh</span>
+        </button>
+    </h1>
+
+    <table  border="0.7px"cellpadding="10" cellspacing="0" style="width:100%; font-size:1.5rem; background:#fff;color:gray; border:0.7px solid #808080;">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Destination</th>
+            <th>Guests</th>
+            <th>Arrivals</th>
+            <th>Leaving</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        <?php foreach ($bookings as $booking): ?>
+        <tr id="booking-<?php echo (int)$booking["id"]; ?>">
+            <td><?php echo clean($booking["name"]); ?></td>
+            <td><?php echo clean($booking["email"]); ?></td>
+            <td><?php echo clean($booking["phone"]); ?></td>
+            <td><?php echo clean($booking["destination_name"]); ?></td>
+            <td><?php echo clean($booking["guests"]); ?></td>
+            <td><?php echo clean($booking["arrivals"]); ?></td>
+            <td><?php echo clean($booking["leaving"]); ?></td>
+            <td><?php echo clean($booking["status"]); ?></td>
+            <td>
+                <button class="delete-booking-btn" data-id="<?php echo (int)$booking["id"]; ?>">
+                    Delete
                 </button>
-            </h1>
-
-            <div id="bookingCards" class="cards-container"></div>
-        </div>
-
-        <div id="managePackagesSection" class="content-section hidden">
-            <h1 class="header">Manage Packages</h1>
-            <div id="packageCards" class="cards-container"></div>
-        </div>
-    </div>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
 
     <script src="../frontend/admin.js"></script>
 </body>
 
 </html>
+
+<script>
+document.querySelectorAll(".delete-booking-btn").forEach(button => {
+    button.addEventListener("click", async function () {
+        if (!confirm("A je i sigurt qe deshiron me fshi kete booking?")) {
+            return;
+        }
+
+        const bookingId = this.dataset.id;
+        const formData = new FormData();
+        formData.append("id", bookingId);
+
+        const response = await fetch("delete-booking.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            document.getElementById("booking-" + bookingId).remove();
+        } else {
+            alert(result.message || "Gabim gjate fshirjes.");
+        }
+    });
+});
+</script>
