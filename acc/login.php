@@ -2,6 +2,20 @@
 session_start();
 require_once(__DIR__ . "/../frontend/db.php");
 
+function getUserNameColumn($pdo) {
+    $columns = $pdo->query("SHOW COLUMNS FROM users")->fetchAll(PDO::FETCH_COLUMN);
+
+    if (in_array("username", $columns)) {
+        return "username";
+    }
+
+    if (in_array("name", $columns)) {
+        return "name";
+    }
+
+    return "email";
+}
+
 $error = "";
 $login = "";
 $loginType = $_POST["login_type"] ?? "user";
@@ -46,7 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
         }
     } else {
         try {
-            $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE username = ? OR email = ? LIMIT 1");
+            $userNameColumn = getUserNameColumn($pdo);
+            $stmt = $pdo->prepare("SELECT id, $userNameColumn AS username, email, password, role FROM users WHERE $userNameColumn = ? OR email = ? LIMIT 1");
             $stmt->execute([$login, $login]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
