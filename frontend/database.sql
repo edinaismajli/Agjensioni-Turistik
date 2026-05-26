@@ -56,6 +56,9 @@ CREATE TABLE travel_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     request_text TEXT NOT NULL,
     source_file VARCHAR(120) NOT NULL,
+    user_id INT NULL,
+    username VARCHAR(80) NOT NULL DEFAULT 'Guest',
+    user_email VARCHAR(120) NOT NULL DEFAULT 'guest@local',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

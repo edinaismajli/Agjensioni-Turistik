@@ -1,66 +1,78 @@
 <?php
 session_start();
+require_once(__DIR__ . "/db.php");
 
 $error = "";
 $login = "";
+$loginType = $_POST["login_type"] ?? "user";
 
 if (isset($_COOKIE["last_user"])) {
     $login = $_COOKIE["last_user"];
 }
 
-$usersFile = __DIR__ . "/../data/users.php";
-
-
-
-if (!file_exists($usersFile)) {
-    die("users.php nuk u gjet te data folder.");
-}
-
-require_once $usersFile;
-
-if (!isset($users) || !is_array($users)) {
-    die("Lista e users nuk u ngarkua.");
-}
+$staticAdmin = [
+    "id" => 1,
+    "username" => "admin",
+    "email" => "admin@gmail.com",
+    "password" => '$2y$10$LNBJnySgrnhJ0w1eHGyup.jzb68fiDyQf/Sc8OHizb..azGEo6Hby',
+    "role" => "admin"
+];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
     $login = trim($_POST["login"] ?? "");
     $password = trim($_POST["password"] ?? "");
+    $loginType = $_POST["login_type"] ?? "user";
 
     if ($login === "" || $password === "") {
         $error = "Ju lutem plotesoni te gjitha fushat.";
     } else {
-        $loggedUser = null;
+        $isStaticAdmin = (
+            $loginType === "admin" &&
+            ($login === $staticAdmin["username"] || $login === $staticAdmin["email"]) &&
+            password_verify($password, $staticAdmin["password"])
+        );
 
-        foreach ($users as $user) {
-            $userName = $user["username"] ?? "";
-            $userEmail = $user["email"] ?? "";
-            $userPassword = $user["password"] ?? "";
+        if ($isStaticAdmin) {
+            $_SESSION["user_id"] = $staticAdmin["id"];
+            $_SESSION["username"] = $staticAdmin["username"];
+            $_SESSION["email"] = $staticAdmin["email"];
+            $_SESSION["role"] = $staticAdmin["role"];
 
-            $passwordIsValid = password_verify($password, $userPassword) || $password === $userPassword;
+            setcookie("last_user", $staticAdmin["username"], time() + (86400 * 7), "/");
 
-            if (($login === $userName || $login === $userEmail) && $passwordIsValid) {
-                $loggedUser = $user;
-                break;
-            }
+            header("Location: admin-panel.php");
+            exit;
         }
 
-        if ($loggedUser !== null) {
-            $_SESSION["user_id"] = $loggedUser["id"];
-            $_SESSION["username"] = $loggedUser["username"];
-            $_SESSION["email"] = $loggedUser["email"];
-            $_SESSION["role"] = $loggedUser["role"];
-
-            setcookie("last_user", $loggedUser["username"], time() + (86400 * 7), "/");
-
-            if ($loggedUser["role"] === "admin") {
-                header("Location: admin-panel.php");
-                exit;
-            }
-
-            header("Location: ../frontend/index.php");
-            exit;
+        if ($loginType === "admin") {
+            $error = "Te dhenat e adminit nuk jane te sakta.";
         } else {
-            $error = "Username/email ose password gabim.";
+            $sql = "SELECT id, username, email, password, role FROM users WHERE username = ? OR email = ? LIMIT 1";
+            $stmt = mysqli_prepare($con, $sql);
+
+            if (!$stmt) {
+                $error = "Gabim gjate login.";
+            } else {
+                mysqli_stmt_bind_param($stmt, "ss", $login, $login);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+                $user = mysqli_fetch_assoc($result);
+
+                if ($user && $user["role"] === "user" && password_verify($password, $user["password"])) {
+                    $_SESSION["user_id"] = $user["id"];
+                    $_SESSION["username"] = $user["username"];
+                    $_SESSION["email"] = $user["email"];
+                    $_SESSION["role"] = $user["role"];
+
+                    setcookie("last_user", $user["username"], time() + (86400 * 7), "/");
+
+                    header("Location: ../frontend/index.php");
+                    exit;
+                }
+
+                $error = "Username/email ose password gabim.";
+                mysqli_stmt_close($stmt);
+            }
         }
     }
 }
@@ -77,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
 </head>
 
 <body>
-    <div class="wrapper">
-        <h2>Login</h2>
+    <div class="wrapper <?php echo $loginType === "admin" ? "admin-access" : ""; ?>">
+        <h2><?php echo $loginType === "admin" ? "Admin Login" : "Login"; ?></h2>
 
         <?php if (isset($_COOKIE["last_user"])) : ?>
         <p style="margin-top: 18px;">
@@ -93,6 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
         <?php endif; ?>
 
         <form method="post" action="login.php">
+            <div class="access-switch">
+                <label>
+                    <input type="radio" name="login_type" value="user" <?php echo $loginType === "user" ? "checked" : ""; ?>>
+                    <span>User</span>
+                </label>
+
+                <label>
+                    <input type="radio" name="login_type" value="admin" <?php echo $loginType === "admin" ? "checked" : ""; ?>>
+                    <span>Admin</span>
+                </label>
+            </div>
+
+            <?php if ($loginType === "admin") : ?>
+            <p class="admin-note">Qasje e veçantë vetëm për administratorin.</p>
+            <?php endif; ?>
+
             <div class="input-box1">
                 <input type="text" name="login" placeholder="Enter your username or email"
                     value="<?php echo htmlspecialchars($login); ?>" required>
