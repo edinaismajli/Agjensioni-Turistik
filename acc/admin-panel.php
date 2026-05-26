@@ -59,7 +59,8 @@ $admin = new Admin(
         <button data-section-id="managePackagesSection">Delete Packages</button>
         <button data-section-id="bookings">Manage Bookings</button>
          <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
-        <button onclick="window.location.href='index.php'">Go to Index</button>
+        <button onclick="window.location.href='/Agjensioni-Turistik/frontend/index.php'">Go to Index</button>
+
     <?php endif; ?>
         <button id="logoutButton">LogOut</button>
     </div>
