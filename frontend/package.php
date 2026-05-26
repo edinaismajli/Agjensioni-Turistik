@@ -33,16 +33,7 @@ $packages = [
 </head>
 <body>
 
-<section class="header">
-    <a href="index.php" class="logo">travel.</a>
-
-    <nav class="navbar">
-        <a href="index.php">Home</a>
-        <a href="package.php">Package</a>
-        <a href="book.html">Book</a>
-        <a href="about.html">About</a>
-    </nav>
-</section>
+<?php include 'header.php'; ?>
 
 <div class="heading" style="background:url(images/header-bg-2.png) no-repeat">
     <h1>packages</h1>
