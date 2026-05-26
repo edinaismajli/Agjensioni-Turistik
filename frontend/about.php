@@ -122,12 +122,12 @@ $yearly_guests = 175000;
         background: url('images/header-bg-1.png') no-repeat;
         background-size: cover;
         background-position: center;
-        padding: 6rem 2rem;
+        padding: 3rem 2rem;
         text-align: center;
     }
 
     .heading h1 {
-        font-size: 4rem;
+        font-size: 2.5rem;
         color: #fff;
         text-shadow: 0 .3rem .5rem rgba(0, 0, 0, .4);
     }
@@ -219,6 +219,14 @@ $yearly_guests = 175000;
 
     }
 
+    .heading {
+        background: url('images/header-bg-1.png') no-repeat;
+        background-size: cover;
+        background-position: center;
+        padding: 3rem 2rem;
+        text-align: center;
+    }
+
     .slide .stars {
         padding-bottom: 1rem;
     }
@@ -251,8 +259,8 @@ $yearly_guests = 175000;
     }
 
     .slide img {
-        height: 5rem;
-        width: 5rem;
+        height: 4rem;
+        width: 4rem;
         border-radius: 50%;
         margin: 1rem auto 0 auto;
         object-fit: cover;
