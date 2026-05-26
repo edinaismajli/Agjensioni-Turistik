@@ -83,7 +83,7 @@ $packageImages = [
                         </button>
                     <?php } ?>
 
-                    <a href="book.html" class="btn">book now</a>
+                    <a href="book1.php" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
@@ -101,7 +101,6 @@ const destinationCoordinates = {
     Japan: { latitude: 35.6762, longitude: 139.6503 },
     Australia: { latitude: -33.8688, longitude: 151.2093 }
 };
-
 document.querySelectorAll('.weather-btn').forEach(button => {
     button.addEventListener('click', async function () {
         const destination = this.dataset.destination;

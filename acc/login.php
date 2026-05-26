@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once(__DIR__ . "/db.php");
+require_once(__DIR__ . "/../frontend/db.php");
 
 $error = "";
 $login = "";
@@ -25,9 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
 
     if ($login === "" || $password === "") {
         $error = "Ju lutem plotesoni te gjitha fushat.";
-    } else {
+    } elseif ($loginType === "admin") {
         $isStaticAdmin = (
-            $loginType === "admin" &&
             ($login === $staticAdmin["username"] || $login === $staticAdmin["email"]) &&
             password_verify($password, $staticAdmin["password"])
         );
@@ -42,37 +41,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
 
             header("Location: admin-panel.php");
             exit;
-        }
-
-        if ($loginType === "admin") {
-            $error = "Te dhenat e adminit nuk jane te sakta.";
         } else {
-            $sql = "SELECT id, username, email, password, role FROM users WHERE username = ? OR email = ? LIMIT 1";
-            $stmt = mysqli_prepare($con, $sql);
+            $error = "Te dhenat e adminit nuk jane te sakta.";
+        }
+    } else {
+        try {
+            $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE username = ? OR email = ? LIMIT 1");
+            $stmt->execute([$login, $login]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$stmt) {
-                $error = "Gabim gjate login.";
-            } else {
-                mysqli_stmt_bind_param($stmt, "ss", $login, $login);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-                $user = mysqli_fetch_assoc($result);
+            if ($user && $user["role"] === "user" && password_verify($password, $user["password"])) {
+                $_SESSION["user_id"] = $user["id"];
+                $_SESSION["username"] = $user["username"];
+                $_SESSION["email"] = $user["email"];
+                $_SESSION["role"] = $user["role"];
 
-                if ($user && $user["role"] === "user" && password_verify($password, $user["password"])) {
-                    $_SESSION["user_id"] = $user["id"];
-                    $_SESSION["username"] = $user["username"];
-                    $_SESSION["email"] = $user["email"];
-                    $_SESSION["role"] = $user["role"];
+                setcookie("last_user", $user["username"], time() + (86400 * 7), "/");
 
-                    setcookie("last_user", $user["username"], time() + (86400 * 7), "/");
-
-                    header("Location: ../frontend/index.php");
-                    exit;
-                }
-
-                $error = "Username/email ose password gabim.";
-                mysqli_stmt_close($stmt);
+                header("Location: ../frontend/index.php");
+                exit;
             }
+
+            $error = "Username/email ose password gabim.";
+        } catch (PDOException $e) {
+            $error = "Gabim gjate login.";
         }
     }
 }
