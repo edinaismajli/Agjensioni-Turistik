@@ -102,32 +102,37 @@ const destinationCoordinates = {
     Australia: { latitude: -33.8688, longitude: 151.2093 }
 };
 
-document.querySelectorAll('.weather-btn').forEach(button => {
+document.querySelectorAll('.delete-package-btn').forEach(button => {
     button.addEventListener('click', async function () {
-        const destination = this.dataset.destination;
-        const resultElement = this.nextElementSibling;
-        const coordinates = destinationCoordinates[destination];
+        const packageId = this.dataset.id;
 
-        if (!coordinates) {
-            resultElement.textContent = 'Weather data not available.';
+        if (!confirm('A je i sigurt qe deshiron me fshi kete pakete?')) {
             return;
         }
 
-        resultElement.textContent = 'Loading weather...';
+        const formData = new FormData();
+        formData.append('id', packageId);
 
         try {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&current=temperature_2m,wind_speed_10m&timezone=auto`;
+            const response = await fetch('delete-package.php', {
+                method: 'POST',
+                body: formData
+            });
 
-            const response = await fetch(url);
-            const data = await response.json();
+            const text = await response.text();
+            console.log(text);
 
-            if (data.current) {
-                resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
+            const result = JSON.parse(text);
+
+            if (result.success) {
+                document.getElementById('package-box-' + packageId).remove();
+                alert('Paketa u fshi me sukses.');
             } else {
-                resultElement.textContent = 'Weather data not found.';
+                alert(result.message);
             }
         } catch (error) {
-            resultElement.textContent = 'Error loading weather.';
+            console.log(error);
+            alert('Gabim gjate fshirjes. Kontrollo console ose delete-package.php.');
         }
     });
 });
