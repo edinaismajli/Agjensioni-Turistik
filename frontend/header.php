@@ -4,11 +4,15 @@ $navItems = [
     ["name" => "Home", "link" => "index.php"],
     ["name" => "Package", "link" => "package.php"],
     ["name" => "Book", "link" => "book1.php"],
-    ["name" => "About", "link" => "about.php"],
-    ["name" => "Login", "link" => "../acc/login.php"],
-    ["name" => "Sign Up", "link" => "../acc/signup.php"],
-    ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"]
+    ["name" => "About", "link" => "about.php"]
 ];
+
+if (isset($_SESSION['user_id'])) {
+    $navItems[] = ["name" => "Logout", "link" => "../acc/logout.php", "class" => "logout"];
+} else {
+    $navItems[] = ["name" => "Login", "link" => "../acc/login.php"];
+    $navItems[] = ["name" => "Sign Up", "link" => "../acc/signup.php"];
+}
 
 ?>
 
