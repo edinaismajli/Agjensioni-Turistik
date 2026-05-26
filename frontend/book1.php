@@ -107,36 +107,7 @@
 
 
 
-    <section class="footer">
-        <div class="box-container">
-            <div class="box">
-                <h3>quick links</h3>
-                <a href="index.php"><i class="fas fa-angle-right"></i> Home</a>
-                <a href="package.php"><i class="fas fa-angle-right"></i> Package</a>
-                <a href="book.html"><i class="fas fa-angle-right"></i> Book</a>
-                <a href="about.html"><i class="fas fa-angle-right"></i> About</a>
-            </div>
-
-            <div class="box">
-                <h3>contact info</h3>
-                <a href="#"><i class="fas fa-phone"></i> 0092-301-9583959</a>
-                <a href="#"><i class="fas fa-envelope"></i> support@travelagency.com</a>
-                <a href="#"><i class="fas fa-map"></i> Islamabad, Pakistan</a>
-            </div>
-
-            <div class="box">
-                <h3>follow us</h3>
-                <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
-                <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            </div>
-        </div>
-
-        <div class="credit">
-            created by <span>Kashif Abbas Kazmi & Muhammad Sarim</span> | all rights
-            reserved!
-        </div>
-    </section>
+    <?php include "footer.php"; ?>
 
 </body>
 
