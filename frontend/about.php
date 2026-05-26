@@ -122,12 +122,12 @@ $yearly_guests = 175000;
         background: url('images/header-bg-1.png') no-repeat;
         background-size: cover;
         background-position: center;
-        padding: 3rem 2rem;
+        padding: 6rem 2rem;
         text-align: center;
     }
 
     .heading h1 {
-        font-size: 2.5rem;
+        font-size: 4rem;
         color: #fff;
         text-shadow: 0 .3rem .5rem rgba(0, 0, 0, .4);
     }
@@ -206,25 +206,19 @@ $yearly_guests = 175000;
         background: #eee;
     }
 
-    /* KODI I RREGULLUAR QË I BËN KUTIJAT TË NJEJTË */
+    /* RREGULLIMI I RI DHE FINAL PËR KUTITË */
     .slide {
         background: #fff;
         border-radius: 10px;
-        padding: 2rem;
+        padding: 2.5rem 2rem;
         text-align: center;
         box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
-        display: flex;
-        flex-direction: column;
-        height: 100%;
 
-    }
+        /* I japim një lartësi të caktuar që të trija kutitë të jenë FOTO-KOPJE të njëra-tjetrës */
+        height: 380px !important;
 
-    .heading {
-        background: url('images/header-bg-1.png') no-repeat;
-        background-size: cover;
-        background-position: center;
-        padding: 3rem 2rem;
-        text-align: center;
+        position: relative;
+        /* Na ndihmon t'i fiksojmë elementet e fundit poshtë */
     }
 
     .slide .stars {
@@ -238,31 +232,43 @@ $yearly_guests = 175000;
 
     .slide p {
         font-size: 1rem;
-        line-height: 2;
+        line-height: 1.8;
         color: #555;
-        padding: 1rem 0;
+        padding: 0;
+        margin: 0;
     }
 
-    .slide h3 {
+    /* Kjo pjesë tani qëndron e gozhduar në fund të kutisë, saktësisht 2.5rem larg fundit */
+    .slide .client-info {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide .client-info h3 {
         font-size: 1.5rem;
         color: #222;
-        margin-top: auto;
-        /* Ky rresht vepron si magnet dhe i rreshton emrat në të njëjtin nivel */
-        padding-top: 1.5rem;
+        margin: 0;
+        padding: 0;
     }
 
-    .slide span {
+    .slide .client-info span {
         color: #0099ff;
         font-size: 1rem;
         display: block;
-        margin-bottom: 0.5rem;
+        margin: 0.3rem 0 0.8rem 0;
     }
 
-    .slide img {
-        height: 4rem;
-        width: 4rem;
+    .slide .client-info img {
+        height: 5rem;
+        width: 5rem;
         border-radius: 50%;
-        margin: 1rem auto 0 auto;
+        margin: 0 auto;
         object-fit: cover;
     }
 
@@ -334,6 +340,11 @@ $yearly_guests = 175000;
 
         .heading h1 {
             font-size: 3rem;
+        }
+
+        /* Në celularë lartësia mund të jetë pak më e lirshme nëse duhet */
+        .slide {
+            height: 400px !important;
         }
     }
     </style>
@@ -414,10 +425,11 @@ $yearly_guests = 175000;
 
                     <p><?php echo $rev['komenti']; ?></p>
 
-                    <h3><?php echo $rev['emri']; ?></h3>
-                    <span><?php echo $rev['roli']; ?></span>
-
-                    <img src="<?php echo $rev['foto']; ?>" alt="">
+                    <div class="client-info">
+                        <h3><?php echo $rev['emri']; ?></h3>
+                        <span><?php echo $rev['roli']; ?></span>
+                        <img src="<?php echo $rev['foto']; ?>" alt="">
+                    </div>
                 </div>
                 <?php endforeach; ?>
 
@@ -463,7 +475,6 @@ $yearly_guests = 175000;
         loop: true,
         spaceBetween: 20,
         autoHeight: false,
-        /* Kjo duhet të jetë patjetër false që të funksionojë lartësia e njëjtë */
         grabCursor: true,
 
         breakpoints: {
