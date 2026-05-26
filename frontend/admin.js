@@ -1,103 +1,162 @@
-const bookingCards = document.getElementById("bookingCards");
-const refreshBookings = document.getElementById("refreshBookings");
+document.addEventListener("DOMContentLoaded", function () {
+  const sectionButtons = document.querySelectorAll("[data-section-id]");
+  const sections = document.querySelectorAll(".content-section");
 
-async function loadBookings() {
+  const addPackageForm = document.getElementById("addPackageForm");
+  const bookingCards = document.getElementById("bookingCards");
+  const refreshBookings = document.getElementById("refreshBookings");
+  const logoutButton = document.getElementById("logoutButton");
+
+  function showSection(sectionId) {
+    sections.forEach((section) => {
+      section.classList.add("hidden");
+    });
+
+    const selectedSection = document.getElementById(sectionId);
+
+    if (selectedSection) {
+      selectedSection.classList.remove("hidden");
+    }
+
+    if (sectionId === "bookings") {
+      loadBookings();
+    }
+  }
+
+  sectionButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      showSection(this.dataset.sectionId);
+    });
+  });
+
+  if (addPackageForm) {
+    addPackageForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const formData = new FormData();
+      formData.append(
+        "packageName",
+        document.getElementById("packageName").value,
+      );
+      formData.append(
+        "packageDescription",
+        document.getElementById("packageDescription").value,
+      );
+      formData.append(
+        "packageCountry",
+        document.getElementById("packageCountry").value,
+      );
+      formData.append(
+        "packageDuration",
+        document.getElementById("packageDuration").value,
+      );
+      formData.append(
+        "packagePrice",
+        document.getElementById("packagePrice").value,
+      );
+
+      try {
+        const response = await fetch("add-package.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const text = await response.text();
+        console.log("add-package.php response:", text);
+
+        const result = JSON.parse(text);
+
+        if (result.success) {
+          alert("Paketa u shtua me sukses.");
+          addPackageForm.reset();
+          window.location.href = "../frontend/package.php";
+        } else {
+          alert(result.message || "Gabim gjate shtimit te paketes.");
+        }
+      } catch (error) {
+        console.error("Add package error:", error);
+        alert("Gabim gjate shtimit te paketes. Shiko Console.");
+      }
+    });
+  }
+
+  async function loadBookings() {
     if (!bookingCards) {
-        return;
+      return;
     }
 
     bookingCards.innerHTML = "<p>Loading bookings...</p>";
 
     try {
-        const response = await fetch("../acc/get-bookings.php");
-        const data = await response.json();
+      const response = await fetch("get-bookings.php");
+      const text = await response.text();
+      console.log("get-bookings.php response:", text);
 
-        if (!data.success) {
-            bookingCards.innerHTML = `<p>${data.message}</p>`;
-            return;
-        }
+      const result = JSON.parse(text);
 
-        if (data.bookings.length === 0) {
-            bookingCards.innerHTML = "<p>No bookings found.</p>";
-            return;
-        }
+      if (!result.success) {
+        bookingCards.innerHTML = `<p>${result.message}</p>`;
+        return;
+      }
 
-        let html = `
-            <table border="1" cellpadding="10" cellspacing="0" style="width:100%; font-size:1.5rem; background:#fff;">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Destination</th>
-                    <th>Guests</th>
-                    <th>Arrivals</th>
-                    <th>Leaving</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+      if (result.bookings.length === 0) {
+        bookingCards.innerHTML = "<p>No bookings found.</p>";
+        return;
+      }
+
+      bookingCards.innerHTML = "";
+
+      result.bookings.forEach((booking) => {
+        const card = document.createElement("div");
+        card.className = "booking-card";
+
+        card.innerHTML = `
+          <h3>${booking.destination_name}</h3>
+          <p><strong>Name:</strong> ${booking.name}</p>
+          <p><strong>Email:</strong> ${booking.email}</p>
+          <p><strong>Phone:</strong> ${booking.phone}</p>
+          <p><strong>Address:</strong> ${booking.address}</p>
+          <p><strong>Guests:</strong> ${booking.guests}</p>
+          <p><strong>Arrivals:</strong> ${booking.arrivals}</p>
+          <p><strong>Leaving:</strong> ${booking.leaving}</p>
+          <p><strong>Status:</strong> ${booking.status}</p>
         `;
 
-        data.bookings.forEach(booking => {
-            html += `
-                <tr id="booking-${booking.id}">
-                    <td>${booking.name}</td>
-                    <td>${booking.email}</td>
-                    <td>${booking.phone}</td>
-                    <td>${booking.destination_name}</td>
-                    <td>${booking.guests}</td>
-                    <td>${booking.arrivals}</td>
-                    <td>${booking.leaving}</td>
-                    <td>${booking.status ?? "pending"}</td>
-                    <td>
-                        <button class="delete-booking-btn" data-id="${booking.id}">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-
-        html += "</table>";
-        bookingCards.innerHTML = html;
-
-        document.querySelectorAll(".delete-booking-btn").forEach(button => {
-            button.addEventListener("click", deleteBooking);
-        });
+        bookingCards.appendChild(card);
+      });
     } catch (error) {
-        bookingCards.innerHTML = "<p>Error loading bookings.</p>";
+      console.error("Load bookings error:", error);
+      bookingCards.innerHTML = "<p>Error loading bookings.</p>";
     }
-}
+  }
 
-async function deleteBooking() {
-    if (!confirm("A je i sigurt qe deshiron me fshi kete booking?")) {
-        return;
+  if (refreshBookings) {
+    refreshBookings.addEventListener("click", function () {
+      loadBookings();
+    });
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      window.location.href = "logout.php";
+    });
+  }
+
+  function updateDateTime() {
+    const dateElement = document.getElementById("date");
+    const timeElement = document.getElementById("time");
+
+    const now = new Date();
+
+    if (dateElement) {
+      dateElement.textContent = now.toLocaleDateString();
     }
 
-    const id = this.dataset.id;
-
-    try {
-        const response = await fetch("../acc/delete-booking.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: "id=" + encodeURIComponent(id)
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            document.getElementById("booking-" + id).remove();
-        } else {
-            alert(data.message);
-        }
-    } catch (error) {
-        alert("Error deleting booking.");
+    if (timeElement) {
+      timeElement.textContent = now.toLocaleTimeString();
     }
-}
+  }
 
-if (refreshBookings) {
-    refreshBookings.addEventListener("click", loadBookings);
-}
-
-document.querySelector('[data-section-id="bookings"]').addEventListener("click", loadBookings);s
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+});
