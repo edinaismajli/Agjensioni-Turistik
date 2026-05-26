@@ -101,6 +101,35 @@ const destinationCoordinates = {
     Japan: { latitude: 35.6762, longitude: 139.6503 },
     Australia: { latitude: -33.8688, longitude: 151.2093 }
 };
+document.querySelectorAll('.weather-btn').forEach(button => {
+    button.addEventListener('click', async function () {
+        const destination = this.dataset.destination;
+        const resultElement = this.nextElementSibling;
+        const coordinates = destinationCoordinates[destination];
+
+        if (!coordinates) {
+            resultElement.textContent = 'Weather data not available.';
+            return;
+        }
+
+        resultElement.textContent = 'Loading weather...';
+
+        try {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}&current=temperature_2m,wind_speed_10m&timezone=auto`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.current) {
+                resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
+            } else {
+                resultElement.textContent = 'Weather data not found.';
+            }
+        } catch (error) {
+            resultElement.textContent = 'Error loading weather.';
+        }
+    });
+});
 
 document.querySelectorAll('.delete-package-btn').forEach(button => {
     button.addEventListener('click', async function () {
