@@ -73,23 +73,7 @@ $packages = [
     </div>
 </section>
 
-<section class="footer">
-    <div class="box-container">
-        <div class="box">
-            <h3>quick links</h3>
-            <a href="index.php">Home</a>
-            <a href="package.php">Package</a>
-            <a href="book.html">Book</a>
-            <a href="about.html">About</a>
-        </div>
-
-        <div class="box">
-            <h3>contact info</h3>
-            <a href="#">0092-301-9583959</a>
-            <a href="#">support@travelagency.com</a>
-        </div>
-    </div>
-</section>
+<?php include 'footer.php'; ?>
 
 <script>
 const destinationCoordinates = {

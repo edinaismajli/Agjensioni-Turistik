@@ -169,8 +169,8 @@ usort($packages, function($a, $b) use ($order) {
    <h1 class="heading-title"> our packages </h1>
 
    <div style="text-align:center; margin:20px;">
-   <a href="?sort=asc" class="btn">Lowest Price</a>
-   <a href="?sort=desc" class="btn">Highest Price</a>
+   <button class="btn sort-btn" data-order="asc">Lowest Price</button>
+   <button class="btn sort-btn" data-order="desc">Highest Price</button>
 </div>
 
    <div class="box-container">
@@ -262,6 +262,25 @@ document.querySelectorAll('.book-btn').forEach(button => {
       });
    });
    });
+
+   document.querySelectorAll('.sort-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    const order = this.dataset.order;
+
+    fetch('ajax/sortPackages.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'order=' + order
+    })
+    .then(res => res.text())
+    .then(html => {
+      // rifresko vetëm container-in e paketave
+      document.querySelector('.home-packages .box-container').innerHTML = html;
+    })
+    .catch(err => console.error(err));
+  });
+});
+
 </script>
 
 </body>
