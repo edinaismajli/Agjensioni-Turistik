@@ -9,23 +9,12 @@ function sanitize($data){
 }
 
 $requestsFolder = __DIR__ . '/kerkesat';
-$oldFilePath = __DIR__ . '/kerkesa_udhetareve.txt';
-$filePath = $requestsFolder . '/kerkesa_udhetareve.txt';
-$displayFilePath = 'kerkesat/kerkesa_udhetareve.txt';
 $fileMessage = '';
 $fileText = '';
-$databaseRequests = [];
+$requestUser = null;
 
 if (!is_dir($requestsFolder)) {
    mkdir($requestsFolder, 0777, true);
-}
-
-if (!file_exists($filePath) && file_exists($oldFilePath)) {
-   copy($oldFilePath, $filePath);
-}
-
-if (!file_exists($filePath)) {
-   file_put_contents($filePath, '');
 }
 
 $pdo->exec("
@@ -33,42 +22,74 @@ $pdo->exec("
       id INT AUTO_INCREMENT PRIMARY KEY,
       request_text TEXT NOT NULL,
       source_file VARCHAR(120) NOT NULL,
+      user_id INT NULL,
+      username VARCHAR(80) NOT NULL DEFAULT 'Guest',
+      user_email VARCHAR(120) NOT NULL DEFAULT 'guest@local',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
 
-$stmt = $pdo->prepare("UPDATE travel_requests SET source_file = ? WHERE source_file = ?");
-$stmt->execute([$displayFilePath, 'kerkesa_udhetareve.txt']);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
-   $fileText = trim($_POST['file_text'] ?? '');
-   $fileAction = $_POST['file_action'] ?? 'append';
-
-   if ($fileAction === 'clear') {
-      file_put_contents($filePath, '');
-      $pdo->exec("DELETE FROM travel_requests");
-      $fileMessage = 'Lista e kërkesave u pastrua me sukses.';
-   } elseif ($fileText === '') {
-      $fileMessage = 'Shkruaj një kërkesë para se ta ruash.';
-   } elseif ($fileAction === 'overwrite') {
-      file_put_contents($filePath, $fileText . PHP_EOL);
-      $pdo->exec("DELETE FROM travel_requests");
-      $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
-      $stmt->execute([$fileText, $displayFilePath]);
-      $fileMessage = 'Lista e kërkesave u përditësua me sukses.';
-   } else {
-      $file = fopen($filePath, 'a');
-      fwrite($file, date('d.m.Y H:i') . ' - ' . $fileText . PHP_EOL);
-      fclose($file);
-      $stmt = $pdo->prepare("INSERT INTO travel_requests (request_text, source_file) VALUES (?, ?)");
-      $stmt->execute([$fileText, $displayFilePath]);
-      $fileMessage = 'Kërkesa u ruajt me sukses.';
+foreach ([
+   "ALTER TABLE travel_requests ADD COLUMN user_id INT NULL",
+   "ALTER TABLE travel_requests ADD COLUMN username VARCHAR(80) NOT NULL DEFAULT 'Guest'",
+   "ALTER TABLE travel_requests ADD COLUMN user_email VARCHAR(120) NOT NULL DEFAULT 'guest@local'"
+] as $alterSql) {
+   try {
+      $pdo->exec($alterSql);
+   } catch (PDOException $e) {
+      // Column already exists.
    }
 }
 
-$fileContent = file_get_contents($filePath);
-$stmt = $pdo->query("SELECT request_text, source_file, created_at FROM travel_requests ORDER BY id DESC");
-$databaseRequests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if (isset($_SESSION['user_id'])) {
+   $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE id = ? LIMIT 1");
+   $stmt->execute([$_SESSION['user_id']]);
+   $requestUser = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['file_form'])) {
+   $fileText = trim($_POST['file_text'] ?? '');
+   $isAjaxRequest = isset($_POST['ajax_request']);
+
+   if ($fileText === '') {
+      $fileMessage = 'Shkruaj një kërkesë para se ta ruash.';
+   } elseif (!$requestUser) {
+      $fileMessage = 'Duhet të kyçesh si user para se të dërgosh kërkesë.';
+   } else {
+      $fileName = 'kerkesa_' . date('Ymd_His') . '_' . bin2hex(random_bytes(3)) . '.txt';
+      $filePath = $requestsFolder . '/' . $fileName;
+      $displayFilePath = 'kerkesat/' . $fileName;
+      $fileContent = "Data: " . date('d.m.Y H:i') . PHP_EOL;
+      $fileContent .= "User ID: " . $requestUser['id'] . PHP_EOL;
+      $fileContent .= "Username: " . $requestUser['username'] . PHP_EOL;
+      $fileContent .= "Email: " . $requestUser['email'] . PHP_EOL;
+      $fileContent .= "Kërkesa: " . $fileText . PHP_EOL;
+
+      file_put_contents($filePath, $fileContent);
+
+      $stmt = $pdo->prepare("
+         INSERT INTO travel_requests (request_text, source_file, user_id, username, user_email)
+         VALUES (?, ?, ?, ?, ?)
+      ");
+      $stmt->execute([
+         $fileText,
+         $displayFilePath,
+         $requestUser['id'],
+         $requestUser['username'],
+         $requestUser['email']
+      ]);
+      $fileMessage = 'Kërkesa u ruajt me sukses.';
+   }
+
+   if ($isAjaxRequest) {
+      header('Content-Type: application/json');
+      echo json_encode([
+         'success' => $fileText !== '' && $requestUser,
+         'message' => $fileMessage
+      ]);
+      exit;
+   }
+}
 
 ?>
 
@@ -295,42 +316,18 @@ usort($packages, function($a, $b) use ($order) {
       <h3>Kërkesa speciale për udhëtim</h3>
       <p>Shëno kërkesa të klientëve për hotel, transport, ushqim ose destinacion.</p>
 
-      <?php if ($fileMessage !== ''): ?>
-         <p class="request-message"><?= sanitize($fileMessage); ?></p>
-      <?php endif; ?>
+      <p class="request-message" id="request-message" <?php if ($fileMessage === ''): ?>style="display:none;"<?php endif; ?>>
+         <?= sanitize($fileMessage); ?>
+      </p>
 
-      <form action="index.php#file-tools" method="post" class="request-form">
+      <form action="index.php#file-tools" method="post" class="request-form" id="request-form">
          <input type="hidden" name="file_form" value="1">
 
          <label for="file_text">Detajet e kërkesës</label>
          <textarea id="file_text" name="file_text" rows="5" placeholder="p.sh. Klienti kërkon dhomë me pamje nga deti dhe transport nga aeroporti..."><?= sanitize($fileText); ?></textarea>
 
-         <label for="file_action">Veprimi me listën</label>
-         <select id="file_action" name="file_action">
-            <option value="append">Shto kërkesë të re</option>
-            <option value="overwrite">Përditëso krejt listën</option>
-            <option value="clear">Pastro listën</option>
-         </select>
-
          <button type="submit" class="btn">Ruaj kërkesën</button>
       </form>
-
-      <div class="saved-requests">
-         <h4>Kërkesat e ruajtura në databazë</h4>
-         <?php if (empty($databaseRequests)): ?>
-            <p class="empty-requests">Ende nuk ka kërkesa të ruajtura.</p>
-         <?php else: ?>
-            <?php foreach ($databaseRequests as $request): ?>
-               <div class="database-request">
-                  <p><?= sanitize($request['request_text']); ?></p>
-                  <span>
-                     <?= sanitize(date('d.m.Y H:i', strtotime($request['created_at']))); ?>
-                     nga <?= sanitize($request['source_file']); ?>
-                  </span>
-               </div>
-            <?php endforeach; ?>
-         <?php endif; ?>
-      </div>
    </div>
 </section>
 
@@ -394,6 +391,36 @@ document.querySelectorAll('.book-btn').forEach(button => {
     .catch(err => console.error(err));
   });
 });
+
+const requestForm = document.getElementById('request-form');
+const requestMessage = document.getElementById('request-message');
+
+if (requestForm && requestMessage) {
+   requestForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(requestForm);
+      formData.append('ajax_request', '1');
+
+      fetch('index.php#file-tools', {
+         method: 'POST',
+         body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+         requestMessage.textContent = data.message;
+         requestMessage.style.display = 'block';
+
+         if (data.success) {
+            requestForm.reset();
+         }
+      })
+      .catch(() => {
+         requestMessage.textContent = 'Kërkesa nuk u ruajt. Provo përsëri.';
+         requestMessage.style.display = 'block';
+      });
+   });
+}
 
 </script>
 
