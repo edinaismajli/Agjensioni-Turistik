@@ -82,6 +82,7 @@ $yearly_guests = 175000;
         color: #222;
     }
 
+    /* STILI PËR HEADER-IN E RI DINAMIK */
     .header {
         position: sticky;
         top: 0;
@@ -100,6 +101,7 @@ $yearly_guests = 175000;
         font-size: 2rem;
         font-weight: bold;
         color: #222;
+        text-transform: lowercase;
     }
 
     .navbar a {
@@ -110,6 +112,15 @@ $yearly_guests = 175000;
 
     .navbar a:hover {
         color: #0099ff;
+    }
+
+    /* Nëse ke ndonjë stil specifik për butonin logout */
+    .navbar a.logout {
+        color: red;
+    }
+
+    .navbar a.logout:hover {
+        color: darkred;
     }
 
     #menu-btn {
@@ -206,19 +217,16 @@ $yearly_guests = 175000;
         background: #eee;
     }
 
-    /* RREGULLIMI I RI DHE FINAL PËR KUTITË */
+    /* KUTIJAT E RRESHTUARA BASHKË DHE TË BARABARTA */
     .slide {
         background: #fff;
         border-radius: 10px;
         padding: 2.5rem 2rem;
         text-align: center;
         box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
-
-        /* I japim një lartësi të caktuar që të trija kutitë të jenë FOTO-KOPJE të njëra-tjetrës */
-        height: 380px !important;
-
+        height: 390px !important;
+        /* Lartësi fikse që të jenë krejtësisht kopje e njëra-tjetrës */
         position: relative;
-        /* Na ndihmon t'i fiksojmë elementet e fundit poshtë */
     }
 
     .slide .stars {
@@ -238,7 +246,7 @@ $yearly_guests = 175000;
         margin: 0;
     }
 
-    /* Kjo pjesë tani qëndron e gozhduar në fund të kutisë, saktësisht 2.5rem larg fundit */
+    /* Grupi i të dhënave që qëndron i gozhduar në fund */
     .slide .client-info {
         position: absolute;
         bottom: 2.5rem;
@@ -336,15 +344,15 @@ $yearly_guests = 175000;
         .navbar a {
             display: block;
             margin: 1rem 0;
+            margin-left: 0;
         }
 
         .heading h1 {
             font-size: 3rem;
         }
 
-        /* Në celularë lartësia mund të jetë pak më e lirshme nëse duhet */
         .slide {
-            height: 400px !important;
+            height: 410px !important;
         }
     }
     </style>
@@ -352,18 +360,7 @@ $yearly_guests = 175000;
 
 <body>
 
-    <section class="header">
-        <a href="index.php" class="logo">Travel.</a>
-
-        <nav class="navbar">
-            <a href="index.php">Home</a>
-            <a href="package.php">Package</a>
-            <a href="book.php">Book</a>
-            <a href="about.php">About</a>
-        </nav>
-
-        <div id="menu-btn" class="fas fa-bars"></div>
-    </section>
+    <?php include 'header.php'; ?>
 
     <div class="heading">
         <h1>About Us</h1>
@@ -471,6 +468,20 @@ $yearly_guests = 175000;
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
 
     <script>
+    // Skripti për hapjen/mbylljen e menusë responsive në celularë
+    let menu = document.querySelector('#menu-btn');
+    let navbar = document.querySelector('.header .navbar');
+
+    menu.onclick = () => {
+        menu.classList.toggle('fa-times');
+        navbar.classList.toggle('active');
+    };
+
+    window.onscroll = () => {
+        menu.classList.remove('fa-times');
+        navbar.classList.remove('active');
+    };
+
     var swiper = new Swiper(".reviews-slider", {
         loop: true,
         spaceBetween: 20,
