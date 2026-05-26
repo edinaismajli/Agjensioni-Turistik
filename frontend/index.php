@@ -8,6 +8,20 @@ function sanitize($data){
    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
+function getUserNameColumn($pdo) {
+   $columns = $pdo->query("SHOW COLUMNS FROM users")->fetchAll(PDO::FETCH_COLUMN);
+
+   if (in_array('username', $columns)) {
+      return 'username';
+   }
+
+   if (in_array('name', $columns)) {
+      return 'name';
+   }
+
+   return 'email';
+}
+
 $requestsFolder = __DIR__ . '/kerkesat';
 $fileMessage = '';
 $fileText = '';
@@ -42,7 +56,8 @@ foreach ([
 }
 
 if (isset($_SESSION['user_id'])) {
-   $stmt = $pdo->prepare("SELECT id, username, email FROM users WHERE id = ? LIMIT 1");
+   $userNameColumn = getUserNameColumn($pdo);
+   $stmt = $pdo->prepare("SELECT id, $userNameColumn AS username, email FROM users WHERE id = ? LIMIT 1");
    $stmt->execute([$_SESSION['user_id']]);
    $requestUser = $stmt->fetch(PDO::FETCH_ASSOC);
 }
