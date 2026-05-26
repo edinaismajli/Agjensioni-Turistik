@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/db.php";
+
 require_once '../includes/session.php';
 require_once '../classes/User.php';
 require_once '../classes/Admin.php';
@@ -58,7 +60,8 @@ $admin = new Admin(
         <button data-section-id="addPackageSection">Add Package</button>
         <button data-section-id="bookings">Manage Bookings</button>
         <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
-        <button onclick="window.location.href='/Agjensioni-Turistik/frontend/index.php'">Go to Index</button>
+       <button onclick="window.location.href='/Agjensioni-Turistik/frontend/index.php'">Go to Index</button>
+
 
         <?php endif; ?>
         <button id="logoutButton">LogOut</button>
@@ -67,22 +70,20 @@ $admin = new Admin(
     <div id="mainContent" class="container">
         <div id="addPackageSection" class="content-section">
             <h1 class="header">Add Package</h1>
-            <form id="addPackageForm" class="form-addpkg">
-                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
+       <form id="addPackageForm" class="form-addpkg" method="post" action="../acc/add-package.php">
+    <input type="text" id="packageName" name="packageName" class="input-field" placeholder="Package Name" required>
 
-                <textarea id="packageDescription" class="input-field" placeholder="Package Description"
-                    required></textarea>
+    <textarea id="packageDescription" name="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
 
-                <input type="text" id="packageCountry" class="input-field" placeholder="Country" required>
+    <input type="text" id="packageCountry" name="packageCountry" class="input-field" placeholder="Country" required>
 
-                <input type="number" id="packageDuration" class="input-field" placeholder="Duration Days" min="1"
-                    required>
+    <input type="number" id="packageDuration" name="packageDuration" class="input-field" placeholder="Duration Days" min="1" required>
 
-                <input type="number" id="packagePrice" class="input-field" placeholder="Price" min="1" step="0.01"
-                    required>
+    <input type="number" id="packagePrice" name="packagePrice" class="input-field" placeholder="Price" min="1" step="0.01" required>
 
-                <button type="submit" class="action-button">Add Package</button>
-            </form>
+    <button type="submit" class="action-button">Add Package</button>
+</form>
+
 
         </div>
 
