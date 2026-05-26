@@ -67,13 +67,20 @@ $admin = new Admin(
     <div id="mainContent" class="container">
         <div id="addPackageSection" class="content-section">
             <h1 class="header">Add Package</h1>
+<form id="addPackageForm" class="form-addpkg">
+    <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
 
-            <form id="addPackageForm" class="form-addpkg" enctype="multipart/form-data">
-                <input type="text" id="packageName" class="input-field" placeholder="Package Name" required>
-                <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
-                <input type="file" id="packageImage" class="input-field" required>
-                <button type="submit" class="action-button">Add Package</button>
-            </form>
+    <textarea id="packageDescription" class="input-field" placeholder="Package Description" required></textarea>
+
+    <input type="text" id="packageCountry" class="input-field" placeholder="Country" required>
+
+    <input type="number" id="packageDuration" class="input-field" placeholder="Duration Days" min="1" required>
+
+    <input type="number" id="packagePrice" class="input-field" placeholder="Price" min="1" step="0.01" required>
+
+    <button type="submit" class="action-button">Add Package</button>
+</form>
+    
         </div>
 
         <div id="bookings" class="content-section hidden">
