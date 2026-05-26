@@ -119,41 +119,6 @@ document.querySelectorAll('.delete-package-btn').forEach(button => {
                 body: formData
             });
 
-            const text = await response.text();
-            console.log(text);
-
-            const result = JSON.parse(text);
-
-            if (result.success) {
-                document.getElementById('package-box-' + packageId).remove();
-                alert('Paketa u fshi me sukses.');
-            } else {
-                alert(result.message);
-            }
-        } catch (error) {
-            console.log(error);
-            alert('Gabim gjate fshirjes. Kontrollo console ose delete-package.php.');
-        }
-    });
-});
-
-document.querySelectorAll('.delete-package-btn').forEach(button => {
-    button.addEventListener('click', async function () {
-        const packageId = this.dataset.id;
-
-        if (!confirm('A je i sigurt qe deshiron me fshi kete pakete?')) {
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('id', packageId);
-
-        try {
-            const response = await fetch('delete-package.php', {
-                method: 'POST',
-                body: formData
-            });
-
             const result = await response.json();
 
             if (result.success) {
