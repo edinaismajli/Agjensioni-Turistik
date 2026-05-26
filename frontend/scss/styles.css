@@ -214,6 +214,161 @@ body{
    margin-top:2rem;
 }
 
+.travel-requests{
+   display:flex;
+   flex-wrap:wrap;
+   align-items:stretch;
+   gap:0;
+   background:var(--light-bg);
+   scroll-margin-top:9rem;
+}
+
+.travel-requests .image{
+   flex:1 1 42rem;
+   min-height:52rem;
+}
+
+.travel-requests .image img{
+   width:100%;
+   height:100%;
+   object-fit:cover;
+}
+
+.travel-requests .content{
+   flex:1 1 48rem;
+   background:var(--white);
+   padding:4rem;
+   box-shadow:var(--box-shadow);
+}
+
+.travel-requests .request-label{
+   display:inline-block;
+   margin-bottom:1rem;
+   padding:.6rem 1.2rem;
+   background:rgba(142,68,173,.1);
+   color:var(--main-color);
+   font-size:1.25rem;
+   font-weight:600;
+   letter-spacing:0;
+   text-transform:none;
+}
+
+.travel-requests .content h3{
+   font-size:3.2rem;
+   color:var(--black);
+   line-height:1.25;
+   text-transform:none;
+}
+
+.travel-requests .content p{
+   font-size:1.55rem;
+   color:var(--light-black);
+   line-height:1.8;
+   padding:1rem 0;
+   text-transform:none;
+}
+
+.travel-requests .request-message{
+   margin:1rem 0;
+   padding:1rem 1.2rem !important;
+   background:#f4ecf7;
+   border-left:.4rem solid var(--main-color);
+   color:var(--black) !important;
+}
+
+.travel-requests .request-form{
+   margin-top:1rem;
+}
+
+.travel-requests .request-form label{
+   display:block;
+   margin:1.3rem 0 .7rem;
+   font-size:1.4rem;
+   color:var(--black);
+   font-weight:600;
+   text-transform:none;
+}
+
+.travel-requests .request-form textarea,
+.travel-requests .request-form select{
+   width:100%;
+   padding:1.3rem 1.4rem;
+   font-size:1.55rem;
+   color:var(--black);
+   border:var(--border);
+   background:var(--light-bg);
+   text-transform:none;
+}
+
+.travel-requests .request-form textarea{
+   min-height:13rem;
+   resize:vertical;
+   line-height:1.7;
+}
+
+.travel-requests .request-form textarea:focus,
+.travel-requests .request-form select:focus{
+   border-color:var(--main-color);
+   background:var(--white);
+}
+
+.travel-requests .saved-requests{
+   margin-top:2.5rem;
+   border:var(--border);
+   background:var(--light-bg);
+}
+
+.travel-requests .saved-requests h4{
+   padding:1.2rem 1.5rem;
+   background:var(--black);
+   color:var(--white);
+   font-size:1.7rem;
+   font-weight:500;
+   text-transform:none;
+}
+
+.travel-requests .saved-requests pre{
+   min-height:11rem;
+   max-height:24rem;
+   overflow:auto;
+   padding:1.5rem;
+   font-size:1.45rem;
+   line-height:1.8;
+   color:var(--black);
+   white-space:pre-wrap;
+   text-transform:none;
+}
+
+.travel-requests .saved-requests .empty-requests{
+   padding:1.5rem;
+   color:var(--light-black);
+   font-size:1.5rem;
+}
+
+.travel-requests .saved-requests .database-request{
+   padding:1.4rem 1.5rem;
+   border-bottom:var(--border);
+   background:var(--white);
+}
+
+.travel-requests .saved-requests .database-request:last-child{
+   border-bottom:0;
+}
+
+.travel-requests .saved-requests .database-request p{
+   padding:0 0 .5rem;
+   color:var(--black);
+   font-size:1.5rem;
+   line-height:1.7;
+}
+
+.travel-requests .saved-requests .database-request span{
+   display:block;
+   color:var(--light-black);
+   font-size:1.25rem;
+   text-transform:none;
+}
+
 .home-offer{
    text-align:center;
 }
@@ -543,6 +698,18 @@ html::-webkit-scrollbar-thumb{
 
    .heading h1{
       font-size:5rem;
+   }
+
+   .travel-requests .image{
+      min-height:28rem;
+   }
+
+   .travel-requests .content{
+      padding:3rem 2rem;
+   }
+
+   .travel-requests .content h3{
+      font-size:2.5rem;
    }
 }
 
