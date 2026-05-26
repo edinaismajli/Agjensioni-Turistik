@@ -277,6 +277,14 @@ usort($packages, function($a, $b) use ($order) {
 </section>
 
 
+<section class="home-offer">
+   <div class="content">
+      <h3>upto 50% off</h3>
+      <a href="book1.php" class="btn">book now</a>
+   </div>
+</section>
+
+
 <section class="travel-requests" id="file-tools">
    <div class="image">
       <img src="images/about-img.jpg" alt="">
@@ -328,12 +336,6 @@ usort($packages, function($a, $b) use ($order) {
 
 
 
-<section class="home-offer">
-   <div class="content">
-      <h3>upto 50% off</h3>
-      <a href="book1.php" class="btn">book now</a>
-   </div>
-</section>
 
 
 

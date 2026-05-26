@@ -55,7 +55,7 @@ $admin = new Admin(
 
 <body>
     <div class="sidebar">
-        <h4 class="admin-title">Admin Dashboard</h4>
+        <h4 class="admin-title" style="text-align: center; ">Admin Dashboard</h4>
 
         <p style="color: white; text-align: center; margin-bottom: 10px;">
             Welcome, <?php echo htmlspecialchars($admin->getUsername()); ?>
@@ -65,11 +65,7 @@ $admin = new Admin(
             Role: <?php echo htmlspecialchars($_SESSION['role']); ?>
         </p>
 
-        <div class="date-time">
-            <div id="date"></div>
-            <div id="time"></div>
-        </div>
-
+        
         <button data-section-id="addPackageSection">Add Package</button>
         <button data-section-id="bookings">Manage Bookings</button>
         <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
@@ -78,6 +74,11 @@ $admin = new Admin(
 
         <?php endif; ?>
         <button id="logoutButton">LogOut</button>
+        <div class="date-time" style="position: fixed; bottom: 5px;align-items: center;  color: white;">
+            <div id="date"style="text-align: center;"></div>
+            <div id="time"style="text-align: center;"></div>
+        </div>
+
     </div>
 
     <div id="mainContent" class="container">
@@ -112,7 +113,7 @@ $admin = new Admin(
         </button>
     </h1>
 
-    <table  border="0.7px"cellpadding="10" cellspacing="0" style="width:100%; font-size:1.5rem; background:#fff;color:gray; border:0.7px solid #808080;">
+    <table  border="0.7px"cellpadding="10" cellspacing="0" style="text-align:center;width:100%; font-size:15px; background:#fff;color:gray; border:0.7px solid #808080;">
         <tr>
             <th>Name</th>
             <th>Email</th>
