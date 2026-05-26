@@ -8,7 +8,9 @@ if (isset($_COOKIE["last_user"])) {
     $login = $_COOKIE["last_user"];
 }
 
-$usersFile = _DIR_ . "/../data/users.php";
+$usersFile = __DIR__ . "/../data/users.php";
+
+
 
 if (!file_exists($usersFile)) {
     die("users.php nuk u gjet te data folder.");
