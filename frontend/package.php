@@ -66,7 +66,7 @@ $packages = [
     <button type="button" class="btn delete-package-btn">Delete</button>
 <?php } ?>
 
-                    <a href="book.html" class="btn">book now</a>
+                    <a href="book1.php" class="btn">book now</a>
                 </div>
             </div>
         <?php } ?>
@@ -105,7 +105,7 @@ document.querySelectorAll('.weather-btn').forEach(button => {
             const data = await response.json();
 
             if (data.current) {
-                resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
+               resultElement.textContent = `Temperature: ${data.current.temperature_2m}°C, Wind: ${data.current.wind_speed_10m} km/h`;
             } else {
                 resultElement.textContent = 'Weather data not found.';
             }

@@ -21,7 +21,7 @@
         <h4 class="admin-title">
             Admin Panel - <?php echo $_SESSION["user"]; ?>
         </h4>
-        <p> Last login: <?php echo $lastUser; ?></p>
+        <p> Last login: <?php echo $_SESSION["user"]; ?></p>
 
 
         <div class="date-time">
@@ -31,7 +31,11 @@
         <button data-section-id="addPackageSection">Add Package</button>
         <button data-section-id="managePackages">Delete Packages</button>
         <button data-section-id="bookings">Manage Bookings</button>
+         <?php if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin"): ?>
+        <button onclick="window.location.href='index.php'">Go to Index</button>
+    <?php endif; ?>
         <button id="logoutButton">LogOut</button>
+
     </div>
 
     <div id="mainContent" class="container">
