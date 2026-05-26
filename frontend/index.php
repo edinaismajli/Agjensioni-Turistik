@@ -190,7 +190,7 @@ require_once "../classes/Services.php";
 $services = [
     new Service("images/icon-1.png", "adventure"),
     new Service("images/icon-2.png", "tour guide"),
-    new Service("images/icon-3.png", "trekking"),
+    new Service("images/icon-3.png", "tracking"),
     new Service("images/icon-4.png", "camp fire"),
     new Service("images/icon-5.png", "off road"),
     new Service("images/icon-6.png", "camping")
@@ -221,7 +221,7 @@ $services = [
 
         <div class="content">
             <h3>about us</h3>
-            <p>Welcome to our vibrant world of travel and exploration! At Travel. , we are passionate about crafting
+            <p>Welcome to our vibrant world of travel and exploration! At Travel. We are passionate about crafting
                 unforgettable journeys that unveil the beauty of diverse destinations. With a commitment to excellence,
                 we invite you to embark on a personalized adventure, where each moment is a story waiting to be
                 discovered.</p>

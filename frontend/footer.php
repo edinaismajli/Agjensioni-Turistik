@@ -6,7 +6,7 @@ $footer = [
     "quick_links" => [
         ["name" => "Home", "link" => "index.php"],
         ["name" => "Package", "link" => "package.php"],
-        ["name" => "Book", "link" => "book.php"],
+        ["name" => "Book", "link" => "book1.php"],
         ["name" => "About", "link" => "about.php"]
     ],
 
