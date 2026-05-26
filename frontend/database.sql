@@ -81,4 +81,3 @@ INSERT INTO packages (destination_id, title, description, duration_days, price) 
 (4, 'Paris Experience', 'France package with city tours.', 4, 900.00),
 (5, 'Japan Discovery', 'Tokyo and Kyoto travel package.', 8, 1500.00),
 (6, 'Australia Escape', 'Sydney and coastal travel package.', 10, 1800.00);
-
