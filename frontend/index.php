@@ -331,7 +331,7 @@ usort($packages, function($a, $b) use ($order) {
 <section class="home-offer">
    <div class="content">
       <h3>upto 50% off</h3>
-      <a href="book.html" class="btn">book now</a>
+      <a href="book1.php" class="btn">book now</a>
    </div>
 </section>
 
@@ -364,7 +364,7 @@ document.querySelectorAll('.book-btn').forEach(button => {
       .then(data => {
 
           if (data.trim() === 'success') {
-             window.location.href = 'book.html';
+             window.location.href = 'book1.php';
          } else {
             alert('Booking failed');
          }
