@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) {
             setcookie("last_user", $loggedUser["username"], time() + (86400 * 7), "/");
 
             if ($loggedUser["role"] === "admin") {
-                header("Location: admin-panel.php");
+                header("Location: ../acc/admin-panel.php");
                 exit;
             }
 
